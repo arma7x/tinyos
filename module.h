@@ -10,6 +10,7 @@ typedef void (*KeyEvent) ();
 typedef struct module
 {
   void (*Init) (int, ...);
+  void (*Destroy) ();
   KeyEvent KeyUp;
   KeyEvent KeyDown;
   KeyEvent KeyRight;
@@ -19,7 +20,6 @@ typedef struct module
   KeyEvent KeyReset;
 } Module;
 
-void resetInput();
 void ModuleSwitcher(Module);
 Module GetActiveModule();
 

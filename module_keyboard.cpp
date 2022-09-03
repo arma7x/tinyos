@@ -27,14 +27,6 @@ static uint8_t text_cursor = 0;
 static uint8_t x = 0;
 static uint8_t y = 0;
 
-void resetInput() {
-  text[0] = '\0';
-  caps_lock = 0;
-  text_cursor = 0;
-  x = 0;
-  y = 0;
-}
-
 static void toggleCapsLock() {
   caps_lock = caps_lock == 1 ? 0 : 1;
   drawKeyboardUI();
@@ -85,7 +77,7 @@ static void drawKeyboardUI() {
   focusChar(1);
 }
 
-static void initKeyboardUI(int num, ...) {
+static void _init(int num, ...) {
   va_list arguments;
   va_start(arguments, num);
   for (uint8_t a=0; a<num;a++) {
@@ -105,6 +97,14 @@ static void initKeyboardUI(int num, ...) {
   LCD.fillRect(0, 10, 160, 70, TFT_BLACK);
   drawKeyboardUI();
   renderText();
+}
+
+static void _destroy() {
+  text[0] = '\0';
+  caps_lock = 0;
+  text_cursor = 0;
+  x = 0;
+  y = 0;
 }
 
 static void onKeyUp() {
@@ -174,7 +174,7 @@ static void onKeyReset( ) {
   renderText();  
 }
 
-static Module KeyboardUI = { initKeyboardUI, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
+static Module KeyboardUI = { _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
 Module GetModuleKeyboardUI() {
   return KeyboardUI;

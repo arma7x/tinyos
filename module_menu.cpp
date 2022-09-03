@@ -49,18 +49,22 @@ char input[27];
 
 static void onSetKeyboard(char* text) {
   snprintf(input, 27, "%s", text);
+  GetActiveModule().Destroy();
   ModuleSwitcher(GetModuleMenu());
   GetActiveModule().Init(0);
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
-  LCD.drawString(text, 54, 56);
-  resetInput();
+  LCD.drawString(input, 54, 56);
 }
 
-void initMenu(int num, ...) {
+static void _init(int num, ...) {
   // Serial.println("Menu init %d\n");
   clearSafeArea();
   drawMenuIcon();
+}
+
+static void _destroy() {
+  input[0] = '\0';
 }
 
 static void onKeyUp() {
@@ -88,6 +92,7 @@ static void onKeyLeft() {}
 
 static void onKeyMid() {
   if (menu_cursor == 5) {
+    // GetActiveModule().Destroy();
     ModuleSwitcher(GetModuleKeyboardUI());
     GetActiveModule().Init(3, input, 27, onSetKeyboard);
   }
@@ -97,11 +102,12 @@ static void onKeySet() {}
 
 static void onKeyReset( ) {
   menu_cursor = 0;
+  GetActiveModule().Destroy();
   ModuleSwitcher(GetModuleHomescreen());
   GetActiveModule().Init(0);
 }
 
-Module menu = { initMenu, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
+Module menu = { _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
 Module GetModuleMenu() {
   return menu;
