@@ -100,7 +100,9 @@ static void _init(int num, ...) {
 }
 
 static void _destroy() {
-  text[0] = '\0';
+  for (uint8_t _i=0;_i<27;_i++) {
+    text[_i] = '\0';  
+  }
   caps_lock = 0;
   text_cursor = 0;
   x = 0;
