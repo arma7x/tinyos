@@ -1,16 +1,3 @@
-#include <YunServer.h>
-#include <FileIO.h>
-#include <BridgeServer.h>
-#include <Bridge.h>
-#include <Process.h>
-#include <YunClient.h>
-#include <HttpClient.h>
-#include <Mailbox.h>
-#include <BridgeClient.h>
-#include <BridgeSSLClient.h>
-#include <Console.h>
-#include <BridgeUdp.h>
-
 #include <pgmspace.h>
 #include <stdint.h>
 #include "constant.h"
@@ -23,13 +10,17 @@
  extern "C" {
 #endif
 
+typedef void(*Callback)(char*);
+
 static void focusChar(uint8_t);
 static void renderText();
 static void drawKeyboardUI();
 static void toggleCapsLock();
 static char getCharacter(uint8_t, uint8_t);
 
+Callback onSetCallback;
 static char text[27];
+static uint8_t max_length;
 static uint8_t caps_lock = 0;
 static uint8_t text_cursor = 0;
 static uint8_t x = 0;
@@ -85,7 +76,21 @@ static void drawKeyboardUI() {
   focusChar(1);
 }
 
-static void initKeyboardUI(int x, ...) {
+static void initKeyboardUI(int num, ...) {
+  va_list arguments;
+  va_start(arguments, num);
+  for (uint8_t a=0; a<num;a++) {
+    if (a == 0) {
+      snprintf(text, 27, "%s", va_arg(arguments, char*));
+      text_cursor = (uint8_t) strlen(text);
+    } else if (a == 1) {
+      // https://www.avrfreaks.net/forum/variadic-function-question-uint8t-vs-uint16t
+      max_length = (uint8_t) va_arg(arguments, int);
+    } else if (a == 2) {
+      onSetCallback = va_arg(arguments, Callback);
+    }
+  }
+  va_end(arguments);
   // Serial.println("Home init\n");
   clearSafeArea();
   LCD.fillRect(0, 10, 160, 70, TFT_BLACK);
@@ -146,7 +151,11 @@ static void onKeyMid() {
   renderText();
 }
 
-static void onKeySet() {}
+static void onKeySet() {
+  if (onSetCallback != NULL) {
+    (*onSetCallback)(text);
+  }
+}
 
 static void onKeyReset( ) {
   if (text_cursor != 0) {

@@ -49,6 +49,10 @@ void drawClock(uint8_t h, uint8_t m, uint8_t s) {
 //  // Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
 //}
 
+void onSetKeyboard(char* text) {
+  Serial.println(F(text));
+}
+
 void setup()
 {
   Serial.begin(115200);
@@ -70,7 +74,10 @@ void setup()
   LCD.fillScreen(TFT_BG);
   drawClock(0, 0, 0);
   // ModuleSwitcher(GetModuleHomescreen());
+  // GetActiveModule().Init(0);
   ModuleSwitcher(GetModuleKeyboardUI());
+  // GetActiveModule().Init(0);
+  GetActiveModule().Init(3, "Ahmad", 5, onSetKeyboard);
   ticker.setInterval([]() {
     time_t t = time(NULL);
     struct tm *tmp = gmtime(&t);

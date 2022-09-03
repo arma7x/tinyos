@@ -44,7 +44,7 @@ void drawMenuIcon() {
   LCD.drawBitmap(2, 15, nav_menu[menu_cursor].icon, 50, 50, TFT_BLACK);
 }
 
-void initMenu(int x, ...) {
+void initMenu(int num, ...) {
   // Serial.println("Menu init %d\n");
   clearSafeArea();
   drawMenuIcon();
@@ -79,7 +79,8 @@ static void onKeySet() {}
 
 static void onKeyReset( ) {
   menu_cursor = 0;
-  ModuleSwitcher(GetModuleHomescreen());  
+  ModuleSwitcher(GetModuleHomescreen());
+  GetActiveModule().Init(0);
 }
 
 Module menu = { initMenu, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };

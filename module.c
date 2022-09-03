@@ -1,3 +1,4 @@
+#include <stdarg.h>
 #include "module.h"
 
 #ifdef __cplusplus
@@ -7,9 +8,8 @@
 
 static Module ActiveModule;
 
-void ModuleSwitcher(Module m) {
+void ModuleSwitcher(Module m ) {
   ActiveModule = m;
-  ActiveModule.Init(0);
 }
 
 Module GetActiveModule() {

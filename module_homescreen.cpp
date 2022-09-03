@@ -14,7 +14,7 @@ void drawHomescreen() {
   LCD.drawBitmap(45, 10, wallpaper, 70, 70, TFT_BLACK);
 }
 
-void initHome(int x, ...) {
+void initHome(int num, ...) {
   // Serial.println("Home init\n");
   clearSafeArea();
   drawHomescreen();
@@ -30,6 +30,7 @@ static void onKeyLeft() {}
 
 static void onKeyMid() {
   ModuleSwitcher(GetModuleMenu());
+  GetActiveModule().Init(0);
 }
 
 static void onKeySet() {}
