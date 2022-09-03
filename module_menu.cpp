@@ -17,14 +17,15 @@ typedef struct _menu {
   char* title;
 } Menu;
 
-#define NUM_MENU 5
+#define NUM_MENU 6
 
-static const Menu nav_menu[5] = {
+static const Menu nav_menu[NUM_MENU] = {
   { epd_bitmap_weather, "Weather" },
   { epd_bitmap_foreign_currency, "Currency" },
   { epd_bitmap_temperature, "Temp" },
   { epd_bitmap_calendar, "Calendar" },
-  { epd_bitmap_settings, "Settings" }
+  { epd_bitmap_settings, "Settings" },
+  { epd_bitmap_keyboard, "Input" }
 };
 
 void clearIcon() {
@@ -42,6 +43,18 @@ void drawMenuIcon() {
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   LCD.drawString(nav_menu[menu_cursor].title, 54, 30);
   LCD.drawBitmap(2, 15, nav_menu[menu_cursor].icon, 50, 50, TFT_BLACK);
+}
+
+char input[27];
+
+static void onSetKeyboard(char* text) {
+  snprintf(input, 27, "%s", text);
+  ModuleSwitcher(GetModuleMenu());
+  GetActiveModule().Init(0);
+  LCD.setTextFont(1);
+  LCD.setTextColor(TFT_BLACK, TFT_BG);
+  LCD.drawString(text, 54, 56);
+  resetInput();
 }
 
 void initMenu(int num, ...) {
@@ -73,7 +86,12 @@ static void onKeyRight( ) {}
 
 static void onKeyLeft() {}
 
-static void onKeyMid() {}
+static void onKeyMid() {
+  if (menu_cursor == 5) {
+    ModuleSwitcher(GetModuleKeyboardUI());
+    GetActiveModule().Init(3, input, 27, onSetKeyboard);
+  }
+}
 
 static void onKeySet() {}
 

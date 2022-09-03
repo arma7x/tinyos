@@ -17,6 +17,7 @@ static void renderText();
 static void drawKeyboardUI();
 static void toggleCapsLock();
 static char getCharacter(uint8_t, uint8_t);
+static char resetOptions();
 
 Callback onSetCallback;
 static char text[27];
@@ -25,6 +26,14 @@ static uint8_t caps_lock = 0;
 static uint8_t text_cursor = 0;
 static uint8_t x = 0;
 static uint8_t y = 0;
+
+void resetInput() {
+  text[0] = '\0';
+  caps_lock = 0;
+  text_cursor = 0;
+  x = 0;
+  y = 0;
+}
 
 static void toggleCapsLock() {
   caps_lock = caps_lock == 1 ? 0 : 1;
@@ -153,7 +162,7 @@ static void onKeyMid() {
 
 static void onKeySet() {
   if (onSetCallback != NULL) {
-    (*onSetCallback)(text);
+    onSetCallback(text);
   }
 }
 

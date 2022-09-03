@@ -19,6 +19,7 @@ typedef struct module
   KeyEvent KeyReset;
 } Module;
 
+void resetInput();
 void ModuleSwitcher(Module);
 Module GetActiveModule();
 

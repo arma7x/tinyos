@@ -16,6 +16,7 @@ extern const uint8_t epd_bitmap_foreign_currency[] PROGMEM;
 extern const uint8_t epd_bitmap_temperature[] PROGMEM;
 extern const uint8_t epd_bitmap_calendar[] PROGMEM;
 extern const uint8_t epd_bitmap_settings[] PROGMEM;
+extern const uint8_t epd_bitmap_keyboard[] PROGMEM;
 
 
 #ifdef __cplusplus
