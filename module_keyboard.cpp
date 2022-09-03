@@ -23,46 +23,61 @@
  extern "C" {
 #endif
 
-void focusChar(uint8_t);
-void renderText();
-void drawKeyboardUI();
+static void focusChar(uint8_t);
+static void renderText();
+static void drawKeyboardUI();
+static void toggleCapsLock();
+static char getCharacter(uint8_t, uint8_t);
 
-static char text[26];
+static char text[27];
+static uint8_t caps_lock = 0;
 static uint8_t text_cursor = 0;
 static uint8_t x = 0;
 static uint8_t y = 0;
 
-void renderText() {
-  LCD.fillRect(2, 12, 156, 22, TFT_BG);
+static void toggleCapsLock() {
+  caps_lock = caps_lock == 1 ? 0 : 1;
+  drawKeyboardUI();
+}
+
+static char getCharacter(uint8_t _y, uint8_t _x) {
+  char ch = keyboards[_y][_x];
+  if (caps_lock == 1 && ch >= 97 && ch <= 122) {
+    ch = ch - 32;
+  } else if (_y == 2 && _x == 9) {
+    ch = caps_lock == 1 ? 'a' : 'A';
+  }
+  return ch;
+}
+
+static void renderText() {
+  LCD.fillRect(0, 12, 160, 22, TFT_BG);
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
-  LCD.drawString(text, 3, 13);
+  LCD.drawString(text, 2, 13);
 }
 
-void focusChar(uint8_t f) {
+static void focusChar(uint8_t f) {
   LCD.setTextFont(1);
   if (f == 0) {
-    LCD.fillRect(30 + (10 * x), 36 + (11 * y), 10, 11, TFT_BLACK);
+    LCD.fillRect(30 + (11 * x), 36 + (11 * y), 11, 11, TFT_BLACK);
     LCD.setTextColor(TFT_BG, TFT_BLACK);
   } else {
-    LCD.fillRect(30 + (10 * x), 36 + (11 * y), 10, 11, TFT_BG);
+    LCD.fillRect(30 + (11 * x), 36 + (11 * y), 11, 11, TFT_BG);
     LCD.setTextColor(TFT_BLACK, TFT_BG);
   }
-  LCD.drawChar(keyboards[y][x], 30 + (10 * x) + 2, 36 + (11 * y) + 2);
+  LCD.drawChar(getCharacter(y, x), 30 + (11 * x) + 3, 36 + (11 * y) + 2);
 }
 
-void drawKeyboardUI() {
-  LCD.fillRect(0, 10, 160, 70, TFT_BLACK);
-  renderText();
+static void drawKeyboardUI() {
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BG, TFT_BLACK);
-  uint8_t x_axis=30; // +10
-  uint8_t y_axis=36; // +11
-  for (uint8_t y=0;y<4;y++) {
-    for (uint8_t x=0;x<10;x++) {
-      // LCD.fillRect(x_axis, y_axis, 10, 11, TFT_BLACK);
-      LCD.drawChar(keyboards[y][x], x_axis + 2, y_axis + 2);
-      x_axis += 10;
+  uint8_t x_axis = 30; // +11
+  uint8_t y_axis = 36; // +11
+  for (uint8_t _y=0;_y<4;_y++) {
+    for (uint8_t _x=0;_x<10;_x++) {
+      LCD.drawChar(getCharacter(_y, _x), x_axis + 3, y_axis + 2);
+      x_axis += 11;
     }
     x_axis = 30;
     y_axis += 11;
@@ -70,10 +85,12 @@ void drawKeyboardUI() {
   focusChar(1);
 }
 
-void initKeyboardUI(int x, ...) {
+static void initKeyboardUI(int x, ...) {
   // Serial.println("Home init\n");
   clearSafeArea();
+  LCD.fillRect(0, 10, 160, 70, TFT_BLACK);
   drawKeyboardUI();
+  renderText();
 }
 
 static void onKeyUp() {
@@ -117,10 +134,14 @@ static void onKeyLeft() {
 }
 
 static void onKeyMid() {
-  if (text_cursor == 25) {
+  if (keyboards[y][x] == 'A') {
+    toggleCapsLock();
     return;
   }
-  text[text_cursor] = keyboards[y][x];
+  if (text_cursor == 26) {
+    return;
+  }
+  text[text_cursor] = getCharacter(y, x);
   text_cursor++;
   renderText();
 }
