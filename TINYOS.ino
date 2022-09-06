@@ -1,10 +1,10 @@
 // #include <WiFi.h>
-#include <time.h>
 #include "env.h"
 #include "constant.h"
 #include "driver.h"
 #include "module.h"
 #include "register_module.h"
+#include "notification_bar.h"
 
 #define BLK 16
 #define RST 33
@@ -35,7 +35,7 @@ void setup()
   LCD.setRotation(3);
   LCD.fillScreen(TFT_BG);
 
-  GetModuleNotificationBar().Init(0);
+  InitNotificationBar();
 
   ModuleSwitcher(GetModuleHomescreen());
   GetActiveModule().Init(0);

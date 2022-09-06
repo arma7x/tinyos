@@ -1,15 +1,17 @@
+#ifndef NOTIFICATION_BAR_H
+#define NOTIFICATION_BAR_H
+
 #if CONFIG_FREERTOS_UNICORE
 #define ARDUINO_RUNNING_CORE 0
 #else
 #define ARDUINO_RUNNING_CORE 1
 #endif
 
+#include <time.h>
 #include <pgmspace.h>
 #include <stdint.h>
 #include "constant.h"
 #include "driver.h"
-#include "module.h"
-#include "register_module.h"
 #include "resources.h"
 
 #ifdef __cplusplus
@@ -47,7 +49,7 @@ void TaskUpdateClock(void *pvParameters) {
   }
 }
 
-static void _init(int num, ...) {
+void InitNotificationBar() {
   xTaskCreatePinnedToCore(
     TaskUpdateClock,  
     "TaskUpdateClock",   // A name just for humans
@@ -59,28 +61,9 @@ static void _init(int num, ...) {
   );  
 }
 
-static void _destroy() {}
-
-static void onKeyUp() {}
-
-static void onKeyDown( ) {}
-
-static void onKeyRight( ) {}
-
-static void onKeyLeft() {}
-
-static void onKeyMid() {}
-
-static void onKeySet() {}
-
-static void onKeyReset( ) {}
-
-static Module notification_bar = { _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
-
-Module GetModuleNotificationBar() {
-  return notification_bar;
-}
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif
