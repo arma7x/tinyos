@@ -22,7 +22,7 @@ typedef struct _menu {
 static const Menu nav_menu[NUM_MENU] = {
   { epd_bitmap_weather, "Weather" },
   { epd_bitmap_foreign_currency, "Currency" },
-  { epd_bitmap_temperature, "Temp" },
+  { epd_bitmap_thermometer, "Thermal" },
   { epd_bitmap_calendar, "Calendar" },
   { epd_bitmap_settings, "Settings" },
   { epd_bitmap_keyboard, "Input" }
