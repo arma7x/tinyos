@@ -1,5 +1,4 @@
 // #include <WiFi.h>
-#include <AsyncTimer.h>
 #include <time.h>
 #include "env.h"
 #include "constant.h"
@@ -15,39 +14,6 @@
 #define LFT 14
 #define DWN 12
 #define UP  13
-
-AsyncTimer ticker;
-
-void formatDigit(char* str, char n) {
-  if (n < 10) {
-    sprintf(str, "0%d", n);
-  } else {
-    sprintf(str, "%d", n);
-  }
-}
-
-void drawClock(uint8_t h, uint8_t m, uint8_t s) {
-  char hms[9];
-  char hs[3], ms[3], ss[3];
-  formatDigit(hs, h);
-  formatDigit(ms, m);
-  formatDigit(ss, s);
-  sprintf(hms, "%s:%s:%s", hs, ms, ss);
-  hms[8] = '\0';
-  LCD.setTextFont(1);
-  LCD.setTextColor(TFT_BLACK, TFT_BG);
-  LCD.drawString(hms, 112, 1);
-}
-
-//void printLocalTime()
-//{
-//  struct tm timeinfo;
-//  if(!getLocalTime(&timeinfo)){
-//    Serial.println(F("Failed to obtain time"));
-//    return;
-//  }
-//  // Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
-//}
 
 void setup()
 {
@@ -68,14 +34,11 @@ void setup()
   LCD.init();
   LCD.setRotation(3);
   LCD.fillScreen(TFT_BG);
-  drawClock(0, 0, 0);
+
+  GetModuleNotificationBar().Init(0);
+
   ModuleSwitcher(GetModuleHomescreen());
   GetActiveModule().Init(0);
-  ticker.setInterval([]() {
-    time_t t = time(NULL);
-    struct tm *tmp = gmtime(&t);
-    drawClock((uint8_t) (t / 3600) % 24, (uint8_t) (t / 60) % 60, (uint8_t) t % 60);
-  }, 1000);
 
 //  Serial.printf("Connecting to %s ", WIFI_SSID);
 //  WiFi.begin(WIFI_SSID, WIFI_PASS);
@@ -95,7 +58,6 @@ void setup()
 
 void loop()
 {
-  ticker.handle(); 
   if(digitalRead(RST) == LOW) {
     delay(250);
     Serial.println(F("Reset Pin Is Pressed."));

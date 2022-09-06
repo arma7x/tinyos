@@ -10,6 +10,7 @@
 Module GetModuleHomescreen();
 Module GetModuleMenu();
 Module GetModuleKeyboardUI();
+Module GetModuleNotificationBar();
 
 
 #ifdef __cplusplus
