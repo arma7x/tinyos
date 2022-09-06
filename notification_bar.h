@@ -37,6 +37,16 @@ void drawClock(uint8_t h, uint8_t m, uint8_t s) {
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   LCD.drawString(hms, 112, 1);
+  
+}
+
+void setWifiStatus(uint8_t status) {
+  LCD.fillRect(0, 1, 54, 10, TFT_BG);
+  if (status == 1) {
+    LCD.drawString("Wi-Fi:ON", 1, 1);
+  } else {
+    LCD.drawString("Wi-Fi:OFF", 1, 1);
+  }
 }
 
 void TaskUpdateClock(void *pvParameters) {
@@ -58,7 +68,8 @@ void InitNotificationBar() {
     3,  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
     NULL, 
     ARDUINO_RUNNING_CORE
-  );  
+  );
+  setWifiStatus(0);
 }
 
 
