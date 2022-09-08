@@ -39,11 +39,27 @@ static void drawMenuIcon() {
   LCD.drawBitmap(2, 15, nav_menu[index_cursor].icon, 50, 50, TFT_BLACK);
 }
 
-static uint8_t brightness = 20;
+static void drawBrightnessLevel() {
+  uint8_t lcd_b = getPreferences().getUChar("lcd_b", 15);
+  char str[4];
+  sprintf(str, "%d", lcd_b);
+  LCD.fillRect(120, 30, 26, 15, TFT_BG);
+  LCD.setTextFont(2);
+  LCD.drawString(str, 120, 30);
+}
 
 static void changeLcdBrightness(uint8_t value) {
+  uint8_t brightness = getPreferences().getUChar("lcd_b", 15);
+  if (brightness >= 255 && value == 1) {
+    return;
+  }
   brightness += value * 5;
+  if (brightness <= 0) {
+    brightness = 5;
+  } 
+  getPreferences().putUChar("lcd_b", brightness);
   ledcWrite(0, brightness);
+  drawBrightnessLevel();
 }
 
 static void _init(int num, ...) {
@@ -60,6 +76,9 @@ static void onKeyUp() {
       index_cursor--;
    }
    drawMenuIcon();
+  if (index_cursor == 1) {
+    drawBrightnessLevel();
+  }
 }
 
 static void onKeyDown( ) {
@@ -68,6 +87,9 @@ static void onKeyDown( ) {
     index_cursor = 0;
   }
   drawMenuIcon();
+  if (index_cursor == 1) {
+    drawBrightnessLevel();
+  }
 }
 
 static void onKeyRight( ) {

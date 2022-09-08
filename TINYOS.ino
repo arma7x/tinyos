@@ -1,3 +1,4 @@
+
 // #include <WiFi.h>
 #include "env.h"
 #include "constant.h"
@@ -5,6 +6,8 @@
 #include "module.h"
 #include "register_module.h"
 #include "notification_bar.h"
+
+
 
 #define BLK 16
 #define RST 33
@@ -19,9 +22,10 @@ void setup()
 {
   Serial.begin(115200);
 
+  uint8_t lcd_b = getPreferences().getUChar("lcd_b", 15);
   ledcSetup(0, 5000, 8);
   ledcAttachPin(BLK, 0);
-  ledcWrite(0, 15); 
+  ledcWrite(0, lcd_b); 
   
   pinMode(RST, INPUT_PULLUP);
   pinMode(SET, INPUT_PULLUP);
