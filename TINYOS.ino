@@ -21,7 +21,7 @@ void setup()
 
   ledcSetup(0, 5000, 8);
   ledcAttachPin(BLK, 0);
-  ledcWrite(0, 20); 
+  ledcWrite(0, 15); 
   
   pinMode(RST, INPUT_PULLUP);
   pinMode(SET, INPUT_PULLUP);

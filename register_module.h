@@ -7,9 +7,15 @@
  extern "C" {
 #endif
 
+typedef struct _menu {
+  const unsigned char* icon;
+  char* title;
+} Menu;
+
 Module GetModuleHomescreen();
 Module GetModuleMenu();
 Module GetModuleKeyboardUI();
+Module GetModuleSettings();
 
 
 #ifdef __cplusplus

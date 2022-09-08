@@ -10,12 +10,7 @@
  extern "C" {
 #endif
 
-uint8_t menu_cursor = 0;
-
-typedef struct _menu {
-  const unsigned char* icon;
-  char* title;
-} Menu;
+static uint8_t menu_cursor = 0;
 
 #define NUM_MENU 6
 
@@ -28,24 +23,25 @@ static const Menu nav_menu[NUM_MENU] = {
   { epd_bitmap_keyboard, "Input" }
 };
 
-void clearIcon() {
+static void clearIcon() {
   LCD.fillRect(2, 15, 50, 50, TFT_BG);
 }
 
-void clearLabel() {
+static void clearLabel() {
   LCD.fillRect(54, 30, 106, 26, TFT_BG);
 }
 
-void drawMenuIcon() {
+static void drawMenuIcon() {
   clearIcon();
   clearLabel();
-  LCD.setTextFont(4);
+  LCD.setTextFont(2);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
+  LCD.setFreeFont(&FreeSansBold9pt7b);
   LCD.drawString(nav_menu[menu_cursor].title, 54, 30);
   LCD.drawBitmap(2, 15, nav_menu[menu_cursor].icon, 50, 50, TFT_BLACK);
 }
 
-char input[27];
+static char input[27];
 
 static void onSetKeyboard(char* text) {
   snprintf(input, 27, "%s", text);
@@ -93,8 +89,11 @@ static void onKeyRight( ) {}
 static void onKeyLeft() {}
 
 static void onKeyMid() {
-  if (menu_cursor == 5) {
-    // GetActiveModule().Destroy();
+  // GetActiveModule().Destroy();
+  if (menu_cursor == 4) {
+    ModuleSwitcher(GetModuleSettings());
+    GetActiveModule().Init(0);
+  } else if (menu_cursor == 5) {
     ModuleSwitcher(GetModuleKeyboardUI());
     GetActiveModule().Init(3, input, 27, onSetKeyboard);
   }
