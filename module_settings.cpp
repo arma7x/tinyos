@@ -1,3 +1,4 @@
+#include <WiFi.h>
 #include <pgmspace.h>
 #include <stdint.h>
 #include "constant.h"
@@ -5,10 +6,14 @@
 #include "module.h"
 #include "register_module.h"
 #include "resources.h"
+#include "notification_bar.h"
 
 #ifdef __cplusplus
  extern "C" {
 #endif
+
+static void drawBrightnessLevel();
+static void drawWifiStatus();
 
 static uint8_t index_cursor = 0;
 
@@ -37,6 +42,26 @@ static void drawMenuIcon() {
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   LCD.drawString(nav_menu[index_cursor].title, 54, 30);
   LCD.drawBitmap(2, 15, nav_menu[index_cursor].icon, 50, 50, TFT_BLACK);
+  if (index_cursor == 0) {
+    drawWifiStatus();
+  } else if (index_cursor == 1) {
+    drawBrightnessLevel();
+  }
+}
+
+static void drawWifiStatus() {
+  LCD.fillRect(120, 30, 26, 15, TFT_BG);
+  LCD.setTextFont(2);
+  switch (WiFi.getMode()) {
+    case WIFI_MODE_STA:
+      LCD.drawString("ON", 120, 30);
+      setWifiStatus(1);
+      break;
+    case WIFI_MODE_NULL:
+      LCD.drawString("OFF", 120, 30);
+      setWifiStatus(0);
+      break;
+  }
 }
 
 static void drawBrightnessLevel() {
@@ -62,6 +87,15 @@ static void changeLcdBrightness(uint8_t value) {
   drawBrightnessLevel();
 }
 
+static void changeWifiStatus(uint8_t value) {
+  if (value == 0) {
+    WiFi.mode(WIFI_MODE_NULL);
+  } else {
+    WiFi.mode(WIFI_MODE_STA);
+  }
+  drawWifiStatus();
+}
+
 static void _init(int num, ...) {
   clearSafeArea();
   drawMenuIcon();
@@ -76,9 +110,6 @@ static void onKeyUp() {
       index_cursor--;
    }
    drawMenuIcon();
-  if (index_cursor == 1) {
-    drawBrightnessLevel();
-  }
 }
 
 static void onKeyDown( ) {
@@ -87,14 +118,11 @@ static void onKeyDown( ) {
     index_cursor = 0;
   }
   drawMenuIcon();
-  if (index_cursor == 1) {
-    drawBrightnessLevel();
-  }
 }
 
 static void onKeyRight( ) {
   if (index_cursor == 0) {
-    
+    changeWifiStatus(1);
   } else if (index_cursor == 1) {
     changeLcdBrightness(1);
   }
@@ -102,7 +130,7 @@ static void onKeyRight( ) {
 
 static void onKeyLeft() {
   if (index_cursor == 0) {
-    
+    changeWifiStatus(0);
   } else if (index_cursor == 1) {
     changeLcdBrightness(-1);
   }

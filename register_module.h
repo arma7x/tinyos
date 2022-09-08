@@ -16,6 +16,7 @@ Module GetModuleHomescreen();
 Module GetModuleMenu();
 Module GetModuleKeyboardUI();
 Module GetModuleSettings();
+Module GetModuleWiFi();
 
 
 #ifdef __cplusplus

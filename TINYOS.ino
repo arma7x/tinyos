@@ -1,12 +1,10 @@
-
-// #include <WiFi.h>
+#include <WiFi.h>
 #include "env.h"
 #include "constant.h"
 #include "driver.h"
 #include "module.h"
 #include "register_module.h"
 #include "notification_bar.h"
-
 
 
 #define BLK 16
@@ -43,25 +41,14 @@ void setup()
 
   ModuleSwitcher(GetModuleHomescreen());
   GetActiveModule().Init(0);
-
-//  Serial.printf("Connecting to %s ", WIFI_SSID);
-//  WiFi.begin(WIFI_SSID, WIFI_PASS);
-//  while (WiFi.status() != WL_CONNECTED) {
-//      delay(500);
-//      Serial.print(".");
-//  }
-//  Serial.println(F(" CONNECTED"));
-//  
-//  configTime(GMT_OFFSET_SEC, DAYLIGHT_OFFSET_SEC, NTP_SERVER);
-//  printLocalTime();
-//
-//  WiFi.disconnect(true);
-//  WiFi.mode(WIFI_OFF);
-
+  
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  updateWifiStatus();
+  Serial.println(F("RUNNING TINYOS"));
 }
 
 void loop()
-{
+{   
   if(digitalRead(RST) == LOW) {
     delay(250);
     Serial.println(F("Reset Pin Is Pressed."));
