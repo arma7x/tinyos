@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include "health_monitor.h"
 #include "env.h"
 #include "constant.h"
 #include "driver.h"
@@ -45,55 +46,56 @@ void setup()
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   updateWifiStatus();
   Serial.println(F("RUNNING TINYOS"));
+  watch();
 }
 
 void loop()
 {   
   if(digitalRead(RST) == LOW) {
     delay(250);
-    Serial.println(F("Reset Pin Is Pressed."));
+    // Serial.println(F("Reset Pin Is Pressed."));
     GetActiveModule().KeyReset();
     while(digitalRead(RST) == LOW);
   }
 
   if(digitalRead(SET) == LOW) {
     delay(250);
-    Serial.println(F("Set Pin Is Pressed."));
+    // Serial.println(F("Set Pin Is Pressed."));
     GetActiveModule().KeySet();
     while(digitalRead(SET) == LOW);
   }
 
   if(digitalRead(MID) == LOW) {
     delay(250);
-    Serial.println(F("Middle Pin Is Pressed."));
+    // Serial.println(F("Middle Pin Is Pressed."));
     GetActiveModule().KeyMid();
     while(digitalRead(MID) == LOW);
   }
 
   if(digitalRead(RHT) == LOW) {
     delay(250);
-    Serial.println(F("Right Pin Is Pressed."));
+    // Serial.println(F("Right Pin Is Pressed."));
     GetActiveModule().KeyRight();
     while(digitalRead(RHT) == LOW);
   }
 
   if(digitalRead(LFT) == LOW) {
     delay(250);
-    Serial.println(F("Left Pin Is Pressed."));
+    // Serial.println(F("Left Pin Is Pressed."));
     GetActiveModule().KeyLeft();
     while(digitalRead(LFT) == LOW);
   }
 
   if(digitalRead(DWN) == LOW) {
     delay(250);
-    Serial.println(F("Down Pin Is Pressed."));
+    // Serial.println(F("Down Pin Is Pressed."));
     GetActiveModule().KeyDown();
     while(digitalRead(DWN) == LOW);
   }
 
   if(digitalRead(UP) == LOW) {
     delay(250);
-    Serial.println(F("Up Pin Is Pressed."));
+    // Serial.println(F("Up Pin Is Pressed."));
     GetActiveModule().KeyUp();
     while(digitalRead(UP) == LOW);
   }

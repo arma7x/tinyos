@@ -45,6 +45,10 @@ void drawClock(uint8_t h, uint8_t m, uint8_t s) {
 
 void TaskSyncClock(void *pvParameters) {
   for (;;) {
+    if (WiFi.getMode() == WIFI_MODE_NULL) {
+      vTaskDelete(syncClock);
+      break;
+    }
     if (WiFi.status() == WL_CONNECTED) {
       struct tm timeinfo;
       if(getLocalTime(&timeinfo)) {
@@ -52,6 +56,7 @@ void TaskSyncClock(void *pvParameters) {
         WiFi.mode(WIFI_OFF);
         updateWifiStatus();
         vTaskDelete(syncClock);
+        break;
       }
     }
     vTaskDelay(1000);
