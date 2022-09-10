@@ -6,6 +6,7 @@
  extern "C" {
 #endif
 
+void drawClock(uint8_t, uint8_t, uint8_t);
 void updateWifiStatus();
 void setWifiStatus(uint8_t);
 void InitNotificationBar();
