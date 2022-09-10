@@ -7,16 +7,6 @@
 #include "register_module.h"
 #include "notification_bar.h"
 
-
-#define BLK 16
-#define RST 33
-#define SET 25
-#define MID 26
-#define RHT 27
-#define LFT 14
-#define DWN 12
-#define UP  13
-
 void setup()
 {
   Serial.begin(115200);
@@ -34,17 +24,17 @@ void setup()
   pinMode(DWN, INPUT_PULLUP);
   pinMode(UP, INPUT_PULLUP);
 
-  LCD.init();
-  LCD.setRotation(3);
-  LCD.fillScreen(TFT_BG);
+  initLCD();
 
   InitNotificationBar();
 
   ModuleSwitcher(GetModuleHomescreen());
   GetActiveModule().Init(0);
-  
-  WiFi.begin(WIFI_SSID, WIFI_PASS);
-  updateWifiStatus();
+
+  WiFi.mode(WIFI_MODE_STA);
+  WiFi.mode(WIFI_MODE_NULL);
+  // WiFi.begin(WIFI_SSID, WIFI_PASS);
+  // updateWifiStatus();
   Serial.println(F("RUNNING TINYOS"));
   watch();
 }

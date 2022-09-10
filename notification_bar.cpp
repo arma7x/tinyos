@@ -51,6 +51,7 @@ void TaskSyncClock(void *pvParameters) {
     }
     if (WiFi.status() == WL_CONNECTED) {
       struct tm timeinfo;
+      configTime(GMT_OFFSET_SEC, DAYLIGHT_OFFSET_SEC, NTP_SERVER);
       if(getLocalTime(&timeinfo)) {
         // WiFi.disconnect(true);
         WiFi.mode(WIFI_OFF);
@@ -74,17 +75,8 @@ void TaskUpdateClock(void *pvParameters) {
 }
 
 void InitNotificationBar() {
-  xTaskCreatePinnedToCore(
-    TaskUpdateClock,  
-    "TaskUpdateClock",   // A name just for humans
-    1024,  // This stack size can be checked & adjusted by reading the Stack Highwater
-    NULL,
-    3,  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-    NULL, 
-    ARDUINO_RUNNING_CORE
-  );
-  configTime(GMT_OFFSET_SEC, DAYLIGHT_OFFSET_SEC, NTP_SERVER);
-  xTaskCreate(TaskSyncClock, "TaskSyncClock", 1024, NULL,3, &syncClock);
+  xTaskCreatePinnedToCore(TaskUpdateClock, "TaskUpdateClock", 1024, NULL, 3, NULL, ARDUINO_RUNNING_CORE);
+  xTaskCreatePinnedToCore(TaskSyncClock, "TaskSyncClock", 1024, NULL, 3, &syncClock, ARDUINO_RUNNING_CORE);
   updateWifiStatus();
 }
 

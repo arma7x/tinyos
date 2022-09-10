@@ -24,19 +24,18 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
  extern "C" {
 #endif
 
-char mem_str[10];
-float mem;
+uint8_t temprature_sens_read();
 
 void TaskHealthMonitor(void *pvParameters) {
   for (;;) {
-    mem = (float) ((ESP.getFreeHeap() - esp_get_free_heap_size()) * 100) / (float) ESP.getFreeHeap();
-    // Serial.printf("%d => %.2f%%\n", ESP.getFreeHeap(), mem);
+    float temp = (temprature_sens_read() - 32) / 1.8;
+    float mem = ((ESP.getFreeHeap() - esp_get_free_heap_size()) * 100) / (float) ESP.getFreeHeap();
     display.clearDisplay();
     display.setTextSize(1);
     display.setCursor(1, 1);
-    display.printf("CPU: %.2f%%  ", 0.0);
+    display.printf("TEMP: %.2fC  ", temp);
     display.setCursor(1, 10);
-    display.printf("RAM: %.2f%%  ", mem);
+    display.printf("RAM : %.2f%% ", mem);
     display.display();
     vTaskDelay(5000);
   }
@@ -52,9 +51,9 @@ void watch() {
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(1, 1);
-  display.println(F("CPU:"));
+  display.println(F("TEMP:"));
   display.setCursor(1, 10);
-  display.println(F("RAM:"));
+  display.println(F("RAM :"));
   display.display();
   xTaskCreatePinnedToCore(
     TaskHealthMonitor,  

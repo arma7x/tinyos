@@ -9,6 +9,8 @@
 #endif
 
 extern TFT_eSPI LCD;
+
+void initLCD();
 void clearSafeArea();
 
 #ifdef __cplusplus
