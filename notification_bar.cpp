@@ -8,7 +8,6 @@
 #include <pgmspace.h>
 #include <stdint.h>
 #include "env.h"
-#include "constant.h"
 #include "driver.h"
 #include "resources.h"
 #include "task.h"
@@ -38,10 +37,10 @@ void drawClock(uint8_t h, uint8_t m, uint8_t s) {
   hms[8] = '\0';
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
-  LCD.drawString(hms, 112, 1); 
+  LCD.drawString(hms, 112, 1);
 }
 
-void InitNotificationBar() {
+void initNotificationBar() {
   xTaskCreatePinnedToCore(TaskUpdateClock, "TaskUpdateClock", 1024, NULL, 3, NULL, ARDUINO_RUNNING_CORE);
   xTaskCreatePinnedToCore(TaskSyncClock, "TaskSyncClock", 1024, NULL, 3, &syncClockPid, ARDUINO_RUNNING_CORE);
   updateWifiStatus();

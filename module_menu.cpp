@@ -1,6 +1,6 @@
 #include <pgmspace.h>
 #include <stdint.h>
-#include "constant.h"
+#include "env.h"
 #include "driver.h"
 #include "module.h"
 #include "register_module.h"
@@ -61,7 +61,7 @@ static void _init(int num, ...) {
 
 static void _destroy() {
   for (uint8_t _i=0;_i<27;_i++) {
-    input[_i] = '\0';  
+    input[_i] = '\0';
   }
 }
 

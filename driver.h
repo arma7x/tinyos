@@ -12,6 +12,7 @@ extern TFT_eSPI LCD;
 
 void initLCD();
 void clearSafeArea();
+void setLcdBrightness(uint8_t);
 
 #ifdef __cplusplus
 }

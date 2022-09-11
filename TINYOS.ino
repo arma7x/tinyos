@@ -1,7 +1,6 @@
 #include <WiFi.h>
 #include "health_monitor.h"
 #include "env.h"
-#include "constant.h"
 #include "driver.h"
 #include "module.h"
 #include "register_module.h"
@@ -11,11 +10,6 @@ void setup()
 {
   Serial.begin(115200);
 
-  uint8_t lcd_b = getPreferences().getUChar("lcd_b", 15);
-  ledcSetup(0, 5000, 8);
-  ledcAttachPin(BLK, 0);
-  ledcWrite(0, lcd_b); 
-  
   pinMode(RST, INPUT_PULLUP);
   pinMode(SET, INPUT_PULLUP);
   pinMode(MID, INPUT_PULLUP);
@@ -26,7 +20,7 @@ void setup()
 
   initLCD();
 
-  InitNotificationBar();
+  initNotificationBar();
 
   ModuleSwitcher(GetModuleHomescreen());
   GetActiveModule().Init(0);
@@ -40,7 +34,7 @@ void setup()
 }
 
 void loop()
-{   
+{
   if(digitalRead(RST) == LOW) {
     delay(250);
     // Serial.println(F("Reset Pin Is Pressed."));

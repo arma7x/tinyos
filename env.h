@@ -1,8 +1,10 @@
-#ifndef CONSTANT_H
-#define CONSTANT_H
+#ifndef ENV_H
+#define ENV_H
+
 
 #include <Preferences.h>
 
+#define BLK_C 0
 #define BLK 16
 #define RST 33
 #define SET 25
@@ -17,6 +19,10 @@
 #define TFT_W 80
 #define TFT_H 160
 
+#define NTP_SERVER "pool.ntp.org"
+#define GMT_OFFSET_SEC 28800
+#define DAYLIGHT_OFFSET_SEC 0
+
 
 #ifdef __cplusplus
  extern "C" {
@@ -27,5 +33,6 @@ Preferences getPreferences();
 #ifdef __cplusplus
 }
 #endif
+
 
 #endif

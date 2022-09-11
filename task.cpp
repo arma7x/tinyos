@@ -3,7 +3,6 @@
 #include <pgmspace.h>
 #include <stdint.h>
 #include "env.h"
-#include "constant.h"
 #include "notification_bar.h"
 
 #ifdef __cplusplus

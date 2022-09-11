@@ -1,6 +1,6 @@
 #include <pgmspace.h>
 #include <stdint.h>
-#include "constant.h"
+#include "env.h"
 #include "driver.h"
 #include "module.h"
 #include "register_module.h"
@@ -101,7 +101,7 @@ static void _init(int num, ...) {
 
 static void _destroy() {
   for (uint8_t _i=0;_i<27;_i++) {
-    text[_i] = '\0';  
+    text[_i] = '\0';
   }
   caps_lock = 0;
   text_cursor = 0;
@@ -116,7 +116,7 @@ static void onKeyUp() {
   } else {
     y--;
   }
-  focusChar(1);  
+  focusChar(1);
 }
 
 static void onKeyDown( ) {
@@ -173,7 +173,7 @@ static void onKeyReset( ) {
     text_cursor--;
   }
   text[text_cursor] = '\0';
-  renderText();  
+  renderText();
 }
 
 static Module KeyboardUI = { _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };

@@ -1,7 +1,7 @@
 #include <WiFi.h>
 #include <pgmspace.h>
 #include <stdint.h>
-#include "constant.h"
+#include "env.h"
 #include "driver.h"
 #include "module.h"
 #include "register_module.h"
@@ -81,9 +81,9 @@ static void changeLcdBrightness(uint8_t value) {
   brightness += value * 5;
   if (brightness <= 0) {
     brightness = 5;
-  } 
+  }
   getPreferences().putUChar("lcd_b", brightness);
-  ledcWrite(0, brightness);
+  setLcdBrightness(brightness);
   drawBrightnessLevel();
 }
 
