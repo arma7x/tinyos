@@ -136,7 +136,12 @@ static void onKeyLeft() {
   }
 }
 
-static void onKeyMid() {}
+static void onKeyMid() {
+  if (index_cursor == 0 && WiFi.getMode() != WIFI_MODE_NULL) {  
+    ModuleSwitcher(GetModuleWiFi());
+    GetActiveModule().Init(0);
+  }
+}
 
 static void onKeySet() {}
 
