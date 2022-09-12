@@ -87,7 +87,7 @@ static void changeLcdBrightness(uint8_t value) {
   drawBrightnessLevel();
 }
 
-static void changeWifiStatus(uint8_t value) {
+static void changeWifiStatus(bool value) {
   if (value == 0) {
     WiFi.mode(WIFI_MODE_NULL);
   } else {
@@ -137,7 +137,7 @@ static void onKeyLeft() {
 }
 
 static void onKeyMid() {
-  if (index_cursor == 0 && WiFi.getMode() != WIFI_MODE_NULL) {  
+  if (index_cursor == 0 && WiFi.getMode() != WIFI_MODE_NULL) {
     ModuleSwitcher(GetModuleWiFi());
     GetActiveModule().Init(0);
   }

@@ -17,7 +17,7 @@
 #endif
 
 void updateWifiStatus();
-void setWifiStatus(uint8_t);
+void setWifiStatus(bool);
 
 void formatDigit(char* str, char n) {
   if (n < 10) {
@@ -46,7 +46,7 @@ void initNotificationBar() {
   updateWifiStatus();
 }
 
-void setWifiStatus(uint8_t status) {
+void setWifiStatus(bool status) {
   LCD.setTextFont(1);
   LCD.fillRect(0, 1, 54, 10, TFT_BG);
   if (status == 1) {

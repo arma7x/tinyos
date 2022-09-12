@@ -12,7 +12,7 @@
 
 typedef void(*Callback)(char*);
 
-static void focusChar(uint8_t);
+static void focusChar(bool);
 static void renderText();
 static void drawKeyboardUI();
 static void toggleCapsLock();
@@ -22,7 +22,7 @@ static char resetOptions();
 Callback onSetCallback;
 static char text[27];
 static uint8_t max_length;
-static uint8_t caps_lock = 0;
+static bool caps_lock = 0;
 static uint8_t text_cursor = 0;
 static uint8_t x = 0;
 static uint8_t y = 0;
@@ -49,7 +49,7 @@ static void renderText() {
   LCD.drawString(text, 2, 13);
 }
 
-static void focusChar(uint8_t f) {
+static void focusChar(bool f) {
   LCD.setTextFont(1);
   if (f == 0) {
     LCD.fillRect(30 + (11 * x), 36 + (11 * y), 11, 11, TFT_BLACK);
