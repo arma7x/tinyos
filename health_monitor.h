@@ -55,15 +55,7 @@ void watch() {
   display.setCursor(1, 10);
   display.println(F("RAM :"));
   display.display();
-  xTaskCreatePinnedToCore(
-    TaskHealthMonitor,  
-    "TaskHealthMonitor",   // A name just for humans
-    2048,  // This stack size can be checked & adjusted by reading the Stack Highwater
-    NULL,
-    3,  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-    NULL, 
-    ARDUINO_RUNNING_CORE
-  );
+  xTaskCreatePinnedToCore(TaskHealthMonitor, "TaskHealthMonitor", 2048, NULL, 3, NULL, ARDUINO_RUNNING_CORE);
 }
 
 #ifdef __cplusplus
