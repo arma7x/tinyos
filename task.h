@@ -7,9 +7,11 @@
 #endif
 
 extern TaskHandle_t syncClockPid;
+extern TaskHandle_t watchWifiConnectionPid;
 
 void TaskUpdateClock(void*);
 void TaskSyncClock(void*);
+void TaskWatchWifiConnection(void*);
 
 
 #ifdef __cplusplus

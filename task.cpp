@@ -10,6 +10,7 @@
 #endif
 
 TaskHandle_t syncClockPid;
+TaskHandle_t watchWifiConnectionPid;
 
 void TaskSyncClock(void *pvParameters) {
   for (;;) {
@@ -34,6 +35,16 @@ void TaskUpdateClock(void *pvParameters) {
     t = t + GMT_OFFSET_SEC;
     drawClock((uint8_t) ((t / 3600) % 24), (uint8_t) ((t / 60) % 60), (uint8_t) (t % 60));
     vTaskDelay(1000);
+  }
+}
+
+void TaskWatchWifiConnection(void *pvParameters) {
+  for (;;) {
+    if (WiFi.status() != WL_CONNECTED) {
+      updateWifiStatus();
+      vTaskSuspend(watchWifiConnectionPid);
+    }
+    vTaskDelay(5000);
   }
 }
 
