@@ -14,8 +14,7 @@ TaskHandle_t syncClockPid;
 void TaskSyncClock(void *pvParameters) {
   for (;;) {
     if (WiFi.getMode() == WIFI_MODE_NULL) {
-      vTaskDelete(syncClockPid);
-      break;
+      vTaskSuspend(syncClockPid);
     }
     if (WiFi.status() == WL_CONNECTED) {
       struct tm timeinfo;
@@ -24,8 +23,7 @@ void TaskSyncClock(void *pvParameters) {
         // WiFi.disconnect(true);
         WiFi.mode(WIFI_OFF);
         updateWifiStatus();
-        vTaskDelete(syncClockPid);
-        break;
+        vTaskSuspend(syncClockPid);
       }
     }
     vTaskDelay(1000);

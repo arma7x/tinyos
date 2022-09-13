@@ -10,6 +10,7 @@ void setup()
 {
   Serial.begin(115200);
 
+  // Serial.print(ICMP_TTL);
   pinMode(RST, INPUT_PULLUP);
   pinMode(SET, INPUT_PULLUP);
   pinMode(MID, INPUT_PULLUP);

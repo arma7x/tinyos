@@ -41,8 +41,8 @@ void drawClock(uint8_t h, uint8_t m, uint8_t s) {
 }
 
 void initNotificationBar() {
-  xTaskCreatePinnedToCore(TaskUpdateClock, "TaskUpdateClock", 1024, NULL, 3, NULL, ARDUINO_RUNNING_CORE);
-  xTaskCreatePinnedToCore(TaskSyncClock, "TaskSyncClock", 1024, NULL, 3, &syncClockPid, ARDUINO_RUNNING_CORE);
+  xTaskCreatePinnedToCore(TaskUpdateClock, "TaskUpdateClock", 2048, NULL, 3, NULL, ARDUINO_RUNNING_CORE);
+  xTaskCreatePinnedToCore(TaskSyncClock, "TaskSyncClock", 2048, NULL, 3, &syncClockPid, ARDUINO_RUNNING_CORE);
   updateWifiStatus();
 }
 
