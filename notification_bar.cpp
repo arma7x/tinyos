@@ -48,7 +48,7 @@ void initNotificationBar() {
 
 void setWifiStatus(bool status) {
   LCD.setTextFont(1);
-  LCD.fillRect(0, 1, 54, 10, TFT_BG);
+  LCD.fillRect(0, 1, 96, 10, TFT_BG);
   if (status == 1) {
     LCD.drawString("Wi-Fi:ON", 1, 1);
   } else {

@@ -55,11 +55,15 @@ static void drawWifiStatus() {
   switch (WiFi.getMode()) {
     case WIFI_MODE_STA:
       LCD.drawString("ON", 120, 30);
-      setWifiStatus(1);
+      if ((WiFi.status() != WL_CONNECTED)) {
+        setWifiStatus(1);
+      }
       break;
     case WIFI_MODE_NULL:
       LCD.drawString("OFF", 120, 30);
-      setWifiStatus(0);
+      if ((WiFi.status() != WL_CONNECTED)) {
+        setWifiStatus(0);
+      }
       break;
   }
 }
@@ -89,6 +93,9 @@ static void changeLcdBrightness(uint8_t value) {
 
 static void changeWifiStatus(bool value) {
   if (value == 0) {
+    if ((WiFi.status() == WL_CONNECTED)) {
+      WiFi.disconnect(true);
+    }
     WiFi.mode(WIFI_MODE_NULL);
   } else {
     WiFi.mode(WIFI_MODE_STA);

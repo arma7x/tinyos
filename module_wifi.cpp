@@ -24,6 +24,7 @@ TaskHandle_t TaskScanWifiPid;
 bool mounted = 0;
 int networks = 0;
 uint8_t network_cursor = 0;
+static char password[27];
 
 
 void displayWelcome() {
@@ -88,6 +89,10 @@ void displayNetwork() {
 void taskScanWifi(void *pvParameters) {
   for(;;) {
     displayStartScanning();
+    if (WiFi.scanComplete() == -1) {
+      vTaskDelay(500);
+      continue;
+    }
     networks = 0;
     network_cursor = 0;
     WiFi.scanDelete();
@@ -102,11 +107,22 @@ void taskScanWifi(void *pvParameters) {
   }
 }
 
+static void passwordCallback(char* text) {
+  snprintf(password, 27, "%s", text);
+  GetActiveModule().Destroy();
+  ModuleSwitcher(GetModuleWiFi());
+  GetActiveModule().Init(0);
+}
+
 static void _init(int num, ...) {
-  mounted = 1;
-  networks = 0;
-  network_cursor = 0;
-  displayWelcome();
+  if (mounted != 1) {
+    mounted = 1;
+    networks = 0;
+    network_cursor = 0;
+    displayWelcome();
+  } else {
+    displayNetwork();
+  }
 }
 
 static void _destroy() {
@@ -115,7 +131,6 @@ static void _destroy() {
   network_cursor = 0;
   WiFi.scanDelete();
   if (TaskScanWifiPid != NULL) {
-    Serial.println("SUSPEND TASK");
     vTaskSuspend(TaskScanWifiPid);
     vTaskDelete(TaskScanWifiPid);
     TaskScanWifiPid = NULL;
@@ -147,20 +162,31 @@ static void onKeyLeft() {
 }
 
 static void onKeyMid() {
-  if (WiFi.scanComplete() == -1) {
-    return;
-  }
-  Serial.println("scan start");
   if (TaskScanWifiPid == NULL) {
-    Serial.println("CREATE TASK");
     xTaskCreatePinnedToCore(taskScanWifi, "TaskScanWifi", 8192, NULL, 3, &TaskScanWifiPid, ARDUINO_RUNNING_CORE);
   } else {
-    Serial.println("RESUME TASK");
     vTaskResume(TaskScanWifiPid);
   }
 }
 
-static void onKeySet() {}
+static void onKeySet() {
+  if (WiFi.status() == WL_CONNECTED) {
+    WiFi.disconnect(true);
+  }
+  // WiFi.encryptionType(network_cursor) != WIFI_AUTH_OPEN
+  // prompt password
+  // ModuleSwitcher(GetModuleKeyboardUI());
+  // GetActiveModule().Init(3, input, 27, onSetKeyboard);
+  WiFi.begin("Xperia Z5 Compact_f9b7", "qazwsxedc321");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    LCD.drawString("Wi-Fi:CONNECTING", 1, 1);
+  }
+  LCD.setTextFont(1);
+  LCD.fillRect(0, 1, 96, 10, TFT_BG);
+  LCD.drawString("Wi-Fi:CONNECTED", 1, 1);
+  Serial.println(F("Connected to the WiFi network"));
+}
 
 static void onKeyReset( ) {
   GetActiveModule().Destroy();

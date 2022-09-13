@@ -27,8 +27,6 @@ void setup()
 
   WiFi.mode(WIFI_MODE_STA);
   WiFi.mode(WIFI_MODE_NULL);
-  // WiFi.begin("Xperia Z5 Compact_f9b7", "qazwsxedc211");
-  // updateWifiStatus();
   Serial.println(F("RUNNING TINYOS"));
   watch();
 }
