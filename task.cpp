@@ -20,9 +20,6 @@ void TaskSyncClock(void *pvParameters) {
       struct tm timeinfo;
       configTime(GMT_OFFSET_SEC, DAYLIGHT_OFFSET_SEC, NTP_SERVER);
       if(getLocalTime(&timeinfo)) {
-        // WiFi.disconnect(true);
-        WiFi.mode(WIFI_OFF);
-        updateWifiStatus();
         vTaskSuspend(syncClockPid);
       }
     }

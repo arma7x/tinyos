@@ -10,7 +10,6 @@ void setup()
 {
   Serial.begin(115200);
 
-  // Serial.print(ICMP_TTL);
   pinMode(RST, INPUT_PULLUP);
   pinMode(SET, INPUT_PULLUP);
   pinMode(MID, INPUT_PULLUP);
@@ -28,7 +27,7 @@ void setup()
 
   WiFi.mode(WIFI_MODE_STA);
   WiFi.mode(WIFI_MODE_NULL);
-  // WiFi.begin(WIFI_SSID, WIFI_PASS);
+  // WiFi.begin("Xperia Z5 Compact_f9b7", "qazwsxedc211");
   // updateWifiStatus();
   Serial.println(F("RUNNING TINYOS"));
   watch();
