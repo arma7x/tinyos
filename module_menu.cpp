@@ -12,15 +12,14 @@
 
 static uint8_t menu_cursor = 0;
 
-#define NUM_MENU 6
+#define NUM_MENU 5
 
 static const Menu nav_menu[NUM_MENU] = {
   { epd_bitmap_weather, "Weather" },
   { epd_bitmap_foreign_currency, "Currency" },
   { epd_bitmap_thermometer, "Thermal" },
   { epd_bitmap_calendar, "Calendar" },
-  { epd_bitmap_settings, "Settings" },
-  { epd_bitmap_keyboard, "Input" }
+  { epd_bitmap_settings, "Settings" }
 };
 
 static void drawMenuIcon() {
@@ -32,29 +31,13 @@ static void drawMenuIcon() {
   LCD.drawString(nav_menu[menu_cursor].title, ceil((TFT_W - (strlen(nav_menu[menu_cursor].title) * 10)) / 2) + 2, 61);
 }
 
-static char input[27];
-
-static void onSetKeyboard(char* text) {
-  snprintf(input, 27, "%s", text);
-  GetActiveModule().Destroy();
-  ModuleSwitcher(GetModuleMenu());
-  GetActiveModule().Init(0);
-  LCD.setTextFont(1);
-  LCD.setTextColor(TFT_BLACK, TFT_BG);
-  LCD.drawString(input, 54, 56);
-}
-
 static void _init(int num, ...) {
   // Serial.println("Menu init %d\n");
   clearSafeArea();
   drawMenuIcon();
 }
 
-static void _destroy() {
-  for (uint8_t _i=0;_i<27;_i++) {
-    input[_i] = '\0';
-  }
-}
+static void _destroy() {}
 
 static void onKeyUp() {
    if (menu_cursor - 1 < 0) {
@@ -84,9 +67,6 @@ static void onKeyMid() {
   if (menu_cursor == 4) {
     ModuleSwitcher(GetModuleSettings());
     GetActiveModule().Init(0);
-  } else if (menu_cursor == 5) {
-    ModuleSwitcher(GetModuleKeyboardUI());
-    GetActiveModule().Init(3, input, 27, onSetKeyboard);
   }
 }
 
