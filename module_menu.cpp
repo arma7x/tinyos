@@ -23,22 +23,13 @@ static const Menu nav_menu[NUM_MENU] = {
   { epd_bitmap_keyboard, "Input" }
 };
 
-static void clearIcon() {
-  LCD.fillRect(2, 15, 50, 50, TFT_BG);
-}
-
-static void clearLabel() {
-  LCD.fillRect(54, 30, 106, 26, TFT_BG);
-}
-
 static void drawMenuIcon() {
-  clearIcon();
-  clearLabel();
+  clearSafeArea();
   LCD.setTextFont(2);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   LCD.setFreeFont(&FreeSansBold9pt7b);
-  LCD.drawString(nav_menu[menu_cursor].title, 54, 30);
-  LCD.drawBitmap(2, 15, nav_menu[menu_cursor].icon, 50, 50, TFT_BLACK);
+  LCD.drawBitmap(55, 11, nav_menu[menu_cursor].icon, 50, 50, TFT_BLACK);
+  LCD.drawString(nav_menu[menu_cursor].title, ceil((TFT_W - (strlen(nav_menu[menu_cursor].title) * 10)) / 2) + 2, 61);
 }
 
 static char input[27];
