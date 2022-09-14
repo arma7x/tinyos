@@ -118,14 +118,14 @@ void connectWifi(const char *ssid, char *password) {
   Serial.println(F("Connected to the WiFi network"));
 }
 
-static void setPasswordCallback(char* text) {
+static void setPasswordCallback(char *text) {
   snprintf(password, 27, "%s", text);
-  // WiFi.BSSIDstr(network_cursor).c_str()
-  getPreferences().putString("WIFI", String(password));
   GetActiveModule().Destroy();
   ModuleSwitcher(GetModuleWiFi());
   GetActiveModule().Init(0);
   if (strlen(password) > 0) {
+    const char *key = WiFi.BSSIDstr(network_cursor).c_str();
+    getPreferences().putString(key, String(password));
     connectWifi(WiFi.SSID(network_cursor).c_str(), password);
   }
 }
@@ -194,9 +194,8 @@ static void onKeySet() {
       WiFi.disconnect(true);
     }
     if (WiFi.encryptionType(network_cursor) != WIFI_AUTH_OPEN) {
-      uint8_t lcd_b = getPreferences().getUChar("lcd_b", 15);
-      // WiFi.BSSIDstr(network_cursor).c_str()
-      String _password = getPreferences().getString("WIFI", "");
+      const char *key = WiFi.BSSIDstr(network_cursor).c_str();
+      String _password = getPreferences().getString(key, "");
       snprintf(password, 27, "%s", _password.c_str());
       ModuleSwitcher(GetModuleKeyboardUI());
       GetActiveModule().Init(3, password, 27, setPasswordCallback);
