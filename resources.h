@@ -19,6 +19,7 @@ extern const uint8_t epd_bitmap_settings[] PROGMEM;
 extern const uint8_t epd_bitmap_keyboard[] PROGMEM;
 extern const uint8_t epd_bitmap_sun[] PROGMEM;
 extern const uint8_t epd_bitmap_wi_fi[] PROGMEM;
+extern const uint8_t epd_bitmap_clock[] PROGMEM;
 
 
 #ifdef __cplusplus

@@ -1,3 +1,9 @@
+#if CONFIG_FREERTOS_UNICORE
+#define ARDUINO_RUNNING_CORE 0
+#else
+#define ARDUINO_RUNNING_CORE 1
+#endif
+
 #include <WiFi.h>
 #include <pgmspace.h>
 #include <stdint.h>
@@ -7,6 +13,7 @@
 #include "register_module.h"
 #include "resources.h"
 #include "notification_bar.h"
+#include "task.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -17,11 +24,12 @@ static void drawWifiStatus();
 
 static uint8_t index_cursor = 0;
 
-#define NUM_MENU 2
+#define NUM_MENU 3
 
 static const Menu nav_menu[NUM_MENU] = {
   { epd_bitmap_wi_fi, "Wi-Fi" },
-  { epd_bitmap_sun, "Brightness" }
+  { epd_bitmap_sun, "Brightness" },
+  { epd_bitmap_clock, "Sync Clock" }
 };
 
 static void clearIcon() {
@@ -147,6 +155,14 @@ static void onKeyMid() {
   if (index_cursor == 0 && WiFi.getMode() != WIFI_MODE_NULL) {
     ModuleSwitcher(GetModuleWiFi());
     GetActiveModule().Init(0);
+  } else if (index_cursor == 1) {
+    
+  } else if (index_cursor == 2) {
+    if (syncClockPid != NULL) {
+      vTaskResume(syncClockPid);
+    } else {
+      xTaskCreatePinnedToCore(TaskSyncClock, "TaskSyncClock", 2048, NULL, 3, &syncClockPid, ARDUINO_RUNNING_CORE);
+    }
   }
 }
 
