@@ -7,7 +7,7 @@
 #define ARDUINO_RUNNING_CORE 1
 #endif
 
-#include "freertos/task.h"
+#include "env.h"
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -29,7 +29,7 @@ uint8_t temprature_sens_read();
 void TaskHealthMonitor(void *pvParameters) {
   for (;;) {
     float temp = (temprature_sens_read() - 32) / 1.8;
-    float mem = ((ESP.getFreeHeap() - esp_get_free_heap_size()) * 100) / (float) ESP.getFreeHeap();
+    float mem = ((ESP.getHeapSize() - esp_get_free_heap_size()) * 100) / (float) ESP.getHeapSize();
     display.clearDisplay();
     display.setTextSize(1);
     display.setCursor(1, 1);

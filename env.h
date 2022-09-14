@@ -4,6 +4,12 @@
 
 #include <Preferences.h>
 
+#if CONFIG_FREERTOS_UNICORE
+#define ARDUINO_RUNNING_CORE 0
+#else
+#define ARDUINO_RUNNING_CORE 1
+#endif
+
 #define BLK_C 0
 #define BLK 16
 #define RST 33

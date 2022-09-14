@@ -1,9 +1,3 @@
-#if CONFIG_FREERTOS_UNICORE
-#define ARDUINO_RUNNING_CORE 0
-#else
-#define ARDUINO_RUNNING_CORE 1
-#endif
-
 #include <WiFi.h>
 #include <pgmspace.h>
 #include <stdint.h>
@@ -49,10 +43,10 @@ void displayStartScanning() {
 }
 
 void displayNetwork() {
-  clearSafeArea(); 
+  clearSafeArea();
   char label[10];
   char b_r_ssid[22];
-  char *encryptionType; 
+  char *encryptionType;
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   sprintf(label, "%d of %d", network_cursor + 1, networks);
