@@ -51,16 +51,15 @@ void displayStartScanning() {
 void displayNetwork() {
   clearSafeArea(); 
   char label[10];
-  char b_r_ssi[22];
+  char b_r_ssid[22];
   char *encryptionType; 
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   sprintf(label, "%d of %d", network_cursor + 1, networks);
   LCD.drawString(label, floor((TFT_W - (strlen(label) * 6)) / 2), 12);
-  LCD.drawString(WiFi.SSID(network_cursor), floor((TFT_W - (WiFi.SSID(network_cursor).length() * 6)) / 2), 27);
-  uint8_t* bssid = WiFi.BSSID(network_cursor);
-  sprintf(b_r_ssi, "%02X:%02X:%02X:%02X:%02X:%02X %d", bssid[0], bssid[1], bssid[2], bssid[3], bssid[4], bssid[5], WiFi.RSSI(network_cursor));
-  LCD.drawString(b_r_ssi, floor((TFT_W - (strlen(b_r_ssi) * 6)) / 2), 42);
+  LCD.drawString(WiFi.SSID(network_cursor), floor((TFT_W - (WiFi.SSID(network_cursor).length() * 6)) / 2), 27);;
+  sprintf(b_r_ssid, "%s %d", WiFi.BSSIDstr(network_cursor).c_str(), WiFi.RSSI(network_cursor));
+  LCD.drawString(b_r_ssid, floor((TFT_W - (strlen(b_r_ssid) * 6)) / 2), 42);
   switch (WiFi.encryptionType(network_cursor)) {
     case WIFI_AUTH_OPEN:
       encryptionType = "WIFI_AUTH_OPEN";
@@ -107,11 +106,28 @@ void taskScanWifi(void *pvParameters) {
   }
 }
 
-static void passwordCallback(char* text) {
+void connectWifi(const char *ssid, char *password) {
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    LCD.drawString("Wi-Fi:CONNECTING", 1, 1);
+  }
+  LCD.setTextFont(1);
+  LCD.fillRect(0, 1, 96, 10, TFT_BG);
+  LCD.drawString("Wi-Fi:CONNECTED", 1, 1);
+  Serial.println(F("Connected to the WiFi network"));
+}
+
+static void setPasswordCallback(char* text) {
   snprintf(password, 27, "%s", text);
+  // WiFi.BSSIDstr(network_cursor).c_str()
+  getPreferences().putString("WIFI", String(password));
   GetActiveModule().Destroy();
   ModuleSwitcher(GetModuleWiFi());
   GetActiveModule().Init(0);
+  if (strlen(password) > 0) {
+    connectWifi(WiFi.SSID(network_cursor).c_str(), password);
+  }
 }
 
 static void _init(int num, ...) {
@@ -130,6 +146,9 @@ static void _destroy() {
   networks = 0;
   network_cursor = 0;
   WiFi.scanDelete();
+  for (uint8_t _i=0;_i<27;_i++) {
+    password[_i] = '\0';
+  }
   if (TaskScanWifiPid != NULL) {
     vTaskSuspend(TaskScanWifiPid);
     vTaskDelete(TaskScanWifiPid);
@@ -170,22 +189,21 @@ static void onKeyMid() {
 }
 
 static void onKeySet() {
-  if (WiFi.status() == WL_CONNECTED) {
-    WiFi.disconnect(true);
+  if (networks > 0) {
+    if (WiFi.status() == WL_CONNECTED) {
+      WiFi.disconnect(true);
+    }
+    if (WiFi.encryptionType(network_cursor) != WIFI_AUTH_OPEN) {
+      uint8_t lcd_b = getPreferences().getUChar("lcd_b", 15);
+      // WiFi.BSSIDstr(network_cursor).c_str()
+      String _password = getPreferences().getString("WIFI", "");
+      snprintf(password, 27, "%s", _password.c_str());
+      ModuleSwitcher(GetModuleKeyboardUI());
+      GetActiveModule().Init(3, password, 27, setPasswordCallback);
+    } else {
+      connectWifi(WiFi.SSID(network_cursor).c_str(), "");
+    }
   }
-  // WiFi.encryptionType(network_cursor) != WIFI_AUTH_OPEN
-  // prompt password
-  // ModuleSwitcher(GetModuleKeyboardUI());
-  // GetActiveModule().Init(3, input, 27, onSetKeyboard);
-  WiFi.begin("Xperia Z5 Compact_f9b7", "qazwsxedc321");
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    LCD.drawString("Wi-Fi:CONNECTING", 1, 1);
-  }
-  LCD.setTextFont(1);
-  LCD.fillRect(0, 1, 96, 10, TFT_BG);
-  LCD.drawString("Wi-Fi:CONNECTED", 1, 1);
-  Serial.println(F("Connected to the WiFi network"));
 }
 
 static void onKeyReset( ) {
