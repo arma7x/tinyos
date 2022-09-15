@@ -10,8 +10,8 @@
 
 extern TFT_eSPI LCD;
 
-void initLCD();
-void clearSafeArea();
+void initDisplay();
+void clearDisplaySafeArea();
 void setDisplayBrightness(uint8_t);
 void sleepDisplay(bool);
 

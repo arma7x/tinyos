@@ -22,28 +22,28 @@ static char password[27];
 
 
 void displayWelcome() {
-  clearSafeArea();
+  clearDisplaySafeArea();
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   LCD.drawString(F("Press enter to start scan"), floor((TFT_W - LCD.textWidth(F("Press enter to start scan"))) / 2), 35);
 }
 
 void displayEmptyNetwork() {
-  clearSafeArea();
+  clearDisplaySafeArea();
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   LCD.drawString(F("No networks found"), floor((TFT_W - LCD.textWidth(F("No networks found"))) / 2), 35);
 }
 
 void displayStartScanning() {
-  clearSafeArea();
+  clearDisplaySafeArea();
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   LCD.drawString(F("Scanning"), floor((TFT_W - LCD.textWidth(F("Scanning"))) / 2), 35);
 }
 
 void displayNetwork() {
-  clearSafeArea();
+  clearDisplaySafeArea();
   char label[10];
   char b_r_ssid[22];
   LCD.setTextFont(1);
@@ -75,7 +75,7 @@ void displayNetwork() {
     default:
       LCD.drawString(F("UNKNOWN"), floor((TFT_W - LCD.textWidth(F("UNKNOWN"))) / 2), 57);
     }
-    
+
 }
 
 void taskScanWifi(void *pvParameters) {

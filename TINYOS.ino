@@ -18,15 +18,16 @@ void setup()
   pinMode(DWN, INPUT_PULLUP);
   pinMode(UP, INPUT_PULLUP);
 
-  initLCD();
+  WiFi.mode(WIFI_MODE_STA);
+  WiFi.mode(WIFI_MODE_NULL);
+  
+  initDisplay();
 
   initNotificationBar();
 
   ModuleSwitcher(GetModuleHomescreen());
   GetActiveModule().Init(0);
-
-  WiFi.mode(WIFI_MODE_STA);
-  WiFi.mode(WIFI_MODE_NULL);
+  
   Serial.println(F("RUNNING TINYOS"));
   watch();
 }

@@ -89,7 +89,7 @@ static void changeLcdBrightness(uint8_t value) {
     brightness = 5;
   }
   getPreferences().putUChar("lcd_b", brightness);
-  setLcdBrightness(brightness);
+  setDisplayBrightness(brightness);
   drawBrightnessLevel();
 }
 
@@ -106,7 +106,7 @@ static void changeWifiStatus(bool value) {
 }
 
 static void _init(int num, ...) {
-  clearSafeArea();
+  clearDisplaySafeArea();
   drawMenuIcon();
 }
 

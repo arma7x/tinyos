@@ -23,7 +23,7 @@ static const Menu nav_menu[NUM_MENU] = {
 };
 
 static void drawMenuIcon() {
-  clearSafeArea();
+  clearDisplaySafeArea();
   LCD.setTextFont(2);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   LCD.setFreeFont(&FreeSansBold9pt7b);
@@ -33,7 +33,7 @@ static void drawMenuIcon() {
 
 static void _init(int num, ...) {
   // Serial.println("Menu init %d\n");
-  clearSafeArea();
+  clearDisplaySafeArea();
   drawMenuIcon();
 }
 

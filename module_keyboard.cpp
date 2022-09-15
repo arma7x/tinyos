@@ -93,7 +93,7 @@ static void _init(int num, ...) {
   }
   va_end(arguments);
   // Serial.println("Home init\n");
-  clearSafeArea();
+  clearDisplaySafeArea();
   LCD.fillRect(0, 10, 160, 70, TFT_BLACK);
   drawKeyboardUI();
   renderText();

@@ -9,11 +9,11 @@
 
 TFT_eSPI LCD = TFT_eSPI();
 
-void setLcdBrightness(uint8_t v) {
+void setDisplayBrightness(uint8_t v) {
   ledcWrite(BLK_C, v);
 }
 
-void initLCD() {
+void initDisplay() {
   LCD.init();
   LCD.setRotation(3);
   LCD.fillScreen(TFT_BG);
@@ -21,10 +21,10 @@ void initLCD() {
   uint8_t lcd_b = getPreferences().getUChar("lcd_b", 15);
   ledcSetup(BLK_C, 5000, 8);
   ledcAttachPin(BLK, BLK_C);
-  setLcdBrightness(lcd_b);
+  setDisplayBrightness(lcd_b);
 }
 
-void clearSafeArea() {
+void clearDisplaySafeArea() {
   LCD.fillRect(0, 10, 160, 70, TFT_BG);
 }
 

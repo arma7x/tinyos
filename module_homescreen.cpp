@@ -16,7 +16,7 @@ void drawHomescreen() {
 
 static void _init(int num, ...) {
   // Serial.println("Home init\n");
-  clearSafeArea();
+  clearDisplaySafeArea();
   drawHomescreen();
 }
 
