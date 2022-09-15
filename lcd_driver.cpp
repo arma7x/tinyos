@@ -28,6 +28,14 @@ void clearSafeArea() {
   LCD.fillRect(0, 10, 160, 70, TFT_BG);
 }
 
+void sleepDisplay(bool status) {
+  if (status) {
+    LCD.writecommand(0x10);
+  } else {
+    LCD.writecommand(0x11);
+  }
+}
+
 
 #ifdef __cplusplus
 }
