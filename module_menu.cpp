@@ -28,7 +28,7 @@ static void drawMenuIcon() {
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   LCD.setFreeFont(&FreeSansBold9pt7b);
   LCD.drawBitmap(55, 11, nav_menu[menu_cursor].icon, 50, 50, TFT_BLACK);
-  LCD.drawString(nav_menu[menu_cursor].title, ceil((TFT_W - (strlen(nav_menu[menu_cursor].title) * 10)) / 2) + 2, 61);
+  LCD.drawString(nav_menu[menu_cursor].title, floor((TFT_W - LCD.textWidth(nav_menu[menu_cursor].title)) / 2), 61);
 }
 
 static void _init(int num, ...) {

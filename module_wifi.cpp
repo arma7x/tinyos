@@ -25,58 +25,57 @@ void displayWelcome() {
   clearSafeArea();
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
-  LCD.drawString("Press enter to start scan", floor((TFT_W - (25 * 6)) / 2), 35);
+  LCD.drawString(F("Press enter to start scan"), floor((TFT_W - LCD.textWidth(F("Press enter to start scan"))) / 2), 35);
 }
 
 void displayEmptyNetwork() {
   clearSafeArea();
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
-  LCD.drawString("No networks found", floor((TFT_W - (17 * 6)) / 2), 35);
+  LCD.drawString(F("No networks found"), floor((TFT_W - LCD.textWidth(F("No networks found"))) / 2), 35);
 }
 
 void displayStartScanning() {
   clearSafeArea();
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
-  LCD.drawString("Scanning", floor((TFT_W - (8 * 6)) / 2), 35);
+  LCD.drawString(F("Scanning"), floor((TFT_W - LCD.textWidth(F("Scanning"))) / 2), 35);
 }
 
 void displayNetwork() {
   clearSafeArea();
   char label[10];
   char b_r_ssid[22];
-  char *encryptionType;
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   sprintf(label, "%d of %d", network_cursor + 1, networks);
-  LCD.drawString(label, floor((TFT_W - (strlen(label) * 6)) / 2), 12);
-  LCD.drawString(WiFi.SSID(network_cursor), floor((TFT_W - (WiFi.SSID(network_cursor).length() * 6)) / 2), 27);;
+  LCD.drawString(label, floor((TFT_W - LCD.textWidth(label)) / 2), 12);
+  LCD.drawString(WiFi.SSID(network_cursor), floor((TFT_W - LCD.textWidth(WiFi.SSID(network_cursor))) / 2), 27);
   sprintf(b_r_ssid, "%s %d", WiFi.BSSIDstr(network_cursor).c_str(), WiFi.RSSI(network_cursor));
-  LCD.drawString(b_r_ssid, floor((TFT_W - (strlen(b_r_ssid) * 6)) / 2), 42);
+  LCD.drawString(b_r_ssid, floor((TFT_W - LCD.textWidth(b_r_ssid)) / 2), 42);
   switch (WiFi.encryptionType(network_cursor)) {
     case WIFI_AUTH_OPEN:
-      encryptionType = "WIFI_AUTH_OPEN";
+      LCD.drawString(F("WIFI_AUTH_OPEN"), floor((TFT_W - LCD.textWidth(F("WIFI_AUTH_OPEN"))) / 2), 57);
       break;
     case WIFI_AUTH_WEP:
-      encryptionType = "WIFI_AUTH_WEP";
+      LCD.drawString(F("WIFI_AUTH_WEP"), floor((TFT_W - LCD.textWidth(F("WIFI_AUTH_WEP"))) / 2), 57);
       break;
     case WIFI_AUTH_WPA_PSK:
-      encryptionType = "WIFI_AUTH_WPA_PSK";
+      LCD.drawString(F("WIFI_AUTH_WPA_PSK"), floor((TFT_W - LCD.textWidth(F("WIFI_AUTH_WPA_PSK"))) / 2), 57);
       break;
     case WIFI_AUTH_WPA2_PSK:
-      encryptionType = "WIFI_AUTH_WPA2_PSK";
+      LCD.drawString(F("WIFI_AUTH_WPA2_PSK"), floor((TFT_W - LCD.textWidth(F("WIFI_AUTH_WPA2_PSK"))) / 2), 57);
       break;
     case WIFI_AUTH_WPA_WPA2_PSK:
-      encryptionType = "WIFI_AUTH_WPA_WPA2_PSK";
+      LCD.drawString(F("WIFI_AUTH_WPA_WPA2_PSK"), floor((TFT_W - LCD.textWidth(F("WIFI_AUTH_WPA_WPA2_PSK"))) / 2), 57);
       break;
     case WIFI_AUTH_WPA2_ENTERPRISE:
-      encryptionType = "WIFI_AUTH_WPA2_ENTERPRISE";
+      LCD.drawString(F("WIFI_AUTH_WPA2_ENTERPRISE"), floor((TFT_W - LCD.textWidth(F("WIFI_AUTH_WPA2_ENTERPRISE"))) / 2), 57);
       break;
     default:
-      encryptionType = "UNKNOWN";
+      LCD.drawString(F("UNKNOWN"), floor((TFT_W - LCD.textWidth(F("UNKNOWN"))) / 2), 57);
     }
-    LCD.drawString(encryptionType, floor((TFT_W - (strlen(encryptionType) * 6)) / 2), 57);
+    
 }
 
 void taskScanWifi(void *pvParameters) {
