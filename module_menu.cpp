@@ -63,8 +63,10 @@ static void onKeyRight( ) {}
 static void onKeyLeft() {}
 
 static void onKeyMid() {
-  // GetActiveModule().Destroy();
-  if (menu_cursor == 4) {
+  if (menu_cursor == 2) {
+    ModuleSwitcher(GetModuleTemperature());
+    GetActiveModule().Init(0);
+  } else if (menu_cursor == 4) {
     ModuleSwitcher(GetModuleSettings());
     GetActiveModule().Init(0);
   }
