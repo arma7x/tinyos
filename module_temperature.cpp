@@ -27,14 +27,16 @@ static void taskaht10(void *pvParameters) {
     }
     ahtValue = aht10.readTemperature();
     if (ahtValue != AHTXX_ERROR) {
-      LCD.setTextFont(2);
+      LCD.setTextFont(1);
+      LCD.setFreeFont(&FreeSansBold9pt7b);
       LCD.fillRect(LCD.textWidth(F("Temperature:")) + 4, 20, 90, 14, TFT_BG);
       sprintf(ahtStr, "%.2fC", ahtValue); 
       LCD.drawString(ahtStr, TFT_W - LCD.textWidth(ahtStr) - 4, 20);
     }
     ahtValue = aht10.readHumidity();
     if (ahtValue != AHTXX_ERROR) {
-      LCD.setTextFont(2);
+      LCD.setTextFont(1);
+      LCD.setFreeFont(&FreeSansBold9pt7b);
       LCD.fillRect(LCD.textWidth(F("Humidity:")) + 4, 40, 110, 14, TFT_BG);
       sprintf(ahtStr, "%.2f%%", ahtValue); 
       LCD.drawString(ahtStr, TFT_W - LCD.textWidth(ahtStr) - 4, 40);

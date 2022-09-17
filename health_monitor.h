@@ -37,7 +37,7 @@ void TaskHealthMonitor(void *pvParameters) {
     display.setCursor(1, 10);
     display.printf("RAM : %.2f%% ", mem);
     display.display();
-    vTaskDelay(5000);
+    vTaskDelay(2000);
   }
 }
 
