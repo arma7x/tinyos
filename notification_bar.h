@@ -3,13 +3,13 @@
 
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
-void drawClock(uint8_t, uint8_t, uint8_t);
-void updateWifiStatus();
-void setWifiStatus(bool);
-void initNotificationBar();
+  void drawClock(uint8_t, uint8_t, uint8_t);
+  void updateWifiStatus();
+  void setWifiStatus(bool);
+  void initNotificationBar();
 
 
 #ifdef __cplusplus

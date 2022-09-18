@@ -29,17 +29,17 @@ static void taskaht10(void *pvParameters) {
     if (ahtValue != AHTXX_ERROR) {
       LCD.setTextFont(1);
       LCD.setFreeFont(&FreeSansBold9pt7b);
-      LCD.fillRect(LCD.textWidth(F("Temperature:")) + 4, 20, 90, 14, TFT_BG);
+      LCD.fillRect(0, 61, 80, 19, TFT_BG);
       sprintf(ahtStr, "%.2fC", ahtValue); 
-      LCD.drawString(ahtStr, TFT_W - LCD.textWidth(ahtStr) - 4, 20);
+      LCD.drawString(ahtStr, floor((80 - LCD.textWidth(ahtStr))/ 2) , 61);
     }
     ahtValue = aht10.readHumidity();
     if (ahtValue != AHTXX_ERROR) {
       LCD.setTextFont(1);
       LCD.setFreeFont(&FreeSansBold9pt7b);
-      LCD.fillRect(LCD.textWidth(F("Humidity:")) + 4, 40, 110, 14, TFT_BG);
+      LCD.fillRect(80, 61, 80, 19, TFT_BG);
       sprintf(ahtStr, "%.2f%%", ahtValue); 
-      LCD.drawString(ahtStr, TFT_W - LCD.textWidth(ahtStr) - 4, 40);
+      LCD.drawString(ahtStr, floor((80 - LCD.textWidth(ahtStr))/ 2) + 80 , 61);
     }
     vTaskDelay(30000);
   }
@@ -47,10 +47,8 @@ static void taskaht10(void *pvParameters) {
 
 static void _init(int num, ...) {
   clearDisplaySafeArea();
-  LCD.setTextFont(2);
-  LCD.setTextColor(TFT_BLACK, TFT_BG);
-  LCD.drawString("Temperature:", 4, 20);
-  LCD.drawString("Humidity:", 4, 40);
+  LCD.drawBitmap(14, 11, epd_bitmap_thermometer2, 50, 50, TFT_BLACK);
+  LCD.drawBitmap(95, 11, epd_bitmap_humidity, 50, 50, TFT_BLACK);
   if (TaskScanAHT10Pid == NULL) {
     xTaskCreatePinnedToCore(taskaht10, "taskaht10", 2048, NULL, 3, &TaskScanAHT10Pid, ARDUINO_RUNNING_CORE);
   } else {
@@ -59,7 +57,7 @@ static void _init(int num, ...) {
 }
 
 static void _destroy() {
-  if (vTaskSuspend != NULL) {
+  if (TaskScanAHT10Pid != NULL) {
     vTaskSuspend(TaskScanAHT10Pid);
   }
 }
