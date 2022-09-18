@@ -6,9 +6,6 @@
 #include "register_module.h"
 #include "notification_bar.h"
 
-#include <Wire.h>
-#include <BH1750.h>
-BH1750 lightMeter;
 
 void taskbh1750(void *pvParameters) {
   for (;;) {
@@ -38,6 +35,7 @@ void setup()
   WiFi.mode(WIFI_MODE_NULL);
   
   initDisplay();
+  initLightSensor();
 
   initNotificationBar();
 
@@ -46,9 +44,6 @@ void setup()
 
   watch();  
   Serial.println(F("RUNNING TINYOS"));
-  
-  Wire.begin();
-  lightMeter.begin();
   
   xTaskCreatePinnedToCore(taskbh1750, "taskbh1750", 1024, NULL, 3, NULL, ARDUINO_RUNNING_CORE);
 }
