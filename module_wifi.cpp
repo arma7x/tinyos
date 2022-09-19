@@ -8,6 +8,7 @@
 #include "types.h"
 #include "register_module.h"
 #include "resources.h"
+#include "task.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -108,6 +109,9 @@ void connectWifi(const char *ssid, char *password) {
   LCD.fillRect(0, 1, 96, 10, TFT_BG);
   LCD.drawString("Wi-Fi:CONNECTED", 1, 1);
   Serial.println(F("Connected to the WiFi network"));
+  if (watchWifiConnectionPid == NULL) {
+    xTaskCreatePinnedToCore(TaskWatchWifiConnection, "TaskWatchWifiConnection", 1024, NULL, 3, &watchWifiConnectionPid, ARDUINO_RUNNING_CORE);
+  }
 }
 
 static void setPasswordCallback(char *text) {

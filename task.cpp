@@ -43,6 +43,8 @@ void TaskWatchWifiConnection(void *pvParameters) {
     if (WiFi.status() != WL_CONNECTED) {
       updateWifiStatus();
       vTaskSuspend(watchWifiConnectionPid);
+      vTaskDelete(watchWifiConnectionPid);
+      watchWifiConnectionPid = NULL;
     }
     vTaskDelay(5000);
   }
