@@ -1,5 +1,5 @@
-#ifndef MODULE_H
-#define MODULE_H
+#ifndef TYPES_H
+#define TYPES_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -20,8 +20,10 @@ typedef struct module
   KeyEvent KeyReset;
 } Module;
 
-void ModuleSwitcher(Module);
-Module GetActiveModule();
+typedef struct menu {
+  const unsigned char* icon;
+  char* title;
+} Menu;
 
 #ifdef __cplusplus
 }

@@ -1,5 +1,5 @@
 #include <stdarg.h>
-#include "module.h"
+#include "register_module.h"
 
 #ifdef __cplusplus
  extern "C" {

@@ -1,16 +1,14 @@
 #ifndef REGISTER_MODULE_H
 #define REGISTER_MODULE_H
 
-#include "module.h"
+#include "types.h"
 
 #ifdef __cplusplus
  extern "C" {
 #endif
 
-typedef struct _menu {
-  const unsigned char* icon;
-  char* title;
-} Menu;
+void ModuleSwitcher(Module);
+Module GetActiveModule();
 
 Module GetModuleHomescreen();
 Module GetModuleMenu();

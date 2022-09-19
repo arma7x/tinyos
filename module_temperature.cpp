@@ -4,10 +4,10 @@
 #include <string.h>
 #include "env.h"
 #include "driver.h"
-#include "module.h"
+#include "types.h"
 #include "register_module.h"
 #include "resources.h"
-#include <AHTxx.h>  
+#include <AHTxx.h>
 
 AHTxx aht10(AHTXX_ADDRESS_X38, AHT1x_SENSOR);
 
@@ -30,7 +30,7 @@ static void taskaht10(void *pvParameters) {
       LCD.setTextFont(1);
       LCD.setFreeFont(&FreeSansBold9pt7b);
       LCD.fillRect(0, 61, 80, 19, TFT_BG);
-      sprintf(ahtStr, "%.2fC", ahtValue); 
+      sprintf(ahtStr, "%.2fC", ahtValue);
       LCD.drawString(ahtStr, floor((80 - LCD.textWidth(ahtStr))/ 2) , 61);
     }
     ahtValue = aht10.readHumidity();
@@ -38,7 +38,7 @@ static void taskaht10(void *pvParameters) {
       LCD.setTextFont(1);
       LCD.setFreeFont(&FreeSansBold9pt7b);
       LCD.fillRect(80, 61, 80, 19, TFT_BG);
-      sprintf(ahtStr, "%.2f%%", ahtValue); 
+      sprintf(ahtStr, "%.2f%%", ahtValue);
       LCD.drawString(ahtStr, floor((80 - LCD.textWidth(ahtStr))/ 2) + 80 , 61);
     }
     vTaskDelay(30000);

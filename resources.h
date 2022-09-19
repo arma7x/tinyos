@@ -3,7 +3,6 @@
 
 #include <pgmspace.h>
 #include <stdint.h>
-#include "module.h"
 
 #ifdef __cplusplus
  extern "C" {

@@ -19,6 +19,7 @@ void setDisplayBrightness(uint8_t);
 void sleepDisplay(bool);
 void initLightSensor();
 
+
 #ifdef __cplusplus
 }
 #endif

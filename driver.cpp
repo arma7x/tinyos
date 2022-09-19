@@ -1,21 +1,18 @@
-#include <TFT_eSPI.h>
-#include <SPI.h>
 #include "env.h"
 #include "driver.h"
-
 #include <Wire.h>
-#include <BH1750.h>
+#include <WiFi.h>
 
 #ifdef __cplusplus
  extern "C" {
 #endif
 
-
-BH1750 lightMeter;
-
-void initLightSensor() {
+void initDriver() {
   Wire.begin();
-  lightMeter.begin();
+  WiFi.mode(WIFI_MODE_STA);
+  WiFi.mode(WIFI_MODE_NULL);
+  initDisplay();
+  // initLightSensor();
 }
 
 

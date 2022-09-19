@@ -1,6 +1,7 @@
 #include <TFT_eSPI.h>
 #include <SPI.h>
 #include "env.h"
+#include "driver.h"
 
 #ifdef __cplusplus
  extern "C" {

@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include "env.h"
 #include "driver.h"
-#include "module.h"
+#include "types.h"
 #include "register_module.h"
 #include "resources.h"
 

@@ -1,8 +1,6 @@
-#include <WiFi.h>
 #include "health_monitor.h"
 #include "env.h"
 #include "driver.h"
-#include "module.h"
 #include "register_module.h"
 #include "notification_bar.h"
 
@@ -31,11 +29,7 @@ void setup()
   pinMode(DWN, INPUT_PULLUP);
   pinMode(UP, INPUT_PULLUP);
 
-  WiFi.mode(WIFI_MODE_STA);
-  WiFi.mode(WIFI_MODE_NULL);
-
-  initDisplay();
-  initLightSensor();
+  initDriver();
 
   initNotificationBar();
 
@@ -45,7 +39,7 @@ void setup()
   watch();
   Serial.println(F("RUNNING TINYOS"));
 
-  xTaskCreatePinnedToCore(taskbh1750, "taskbh1750", 1024, NULL, 3, NULL, ARDUINO_RUNNING_CORE);
+  //xTaskCreatePinnedToCore(taskbh1750, "taskbh1750", 1024, NULL, 3, NULL, ARDUINO_RUNNING_CORE);
 }
 
 void loop()
