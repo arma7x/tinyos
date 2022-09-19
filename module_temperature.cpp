@@ -59,6 +59,8 @@ static void _init(int num, ...) {
 static void _destroy() {
   if (TaskScanAHT10Pid != NULL) {
     vTaskSuspend(TaskScanAHT10Pid);
+    vTaskDelete(TaskScanAHT10Pid);
+    TaskScanAHT10Pid = NULL;
   }
 }
 
