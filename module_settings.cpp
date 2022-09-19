@@ -62,17 +62,17 @@ static void drawMenuIcon() {
 }
 
 static void drawWifiStatus() {
-  LCD.fillRect(120, 30, 26, 15, TFT_BG);
   LCD.setTextFont(2);
+  LCD.fillRect(TFT_W - LCD.textWidth(OFF) - 2, 30, LCD.textWidth(OFF) + 2, 15, TFT_BG);
   switch (WiFi.getMode()) {
     case WIFI_MODE_STA:
-      LCD.drawString("ON", 120, 30);
+      LCD.drawString(ON, TFT_W - LCD.textWidth(ON) - 2, 30);
       if ((WiFi.status() != WL_CONNECTED)) {
         setWifiStatus(1);
       }
       break;
     case WIFI_MODE_NULL:
-      LCD.drawString("OFF", 120, 30);
+      LCD.drawString(OFF, TFT_W - LCD.textWidth(OFF) - 2, 30);
       if ((WiFi.status() != WL_CONNECTED)) {
         setWifiStatus(0);
       }
@@ -84,9 +84,9 @@ static void drawBrightnessLevel() {
   uint8_t lcd_b = getPreferences().getUChar("lcd_b", 15);
   char str[4];
   sprintf(str, "%d", lcd_b);
-  LCD.fillRect(120, 30, 26, 15, TFT_BG);
   LCD.setTextFont(2);
-  LCD.drawString(str, 120, 30);
+  LCD.fillRect(TFT_W - LCD.textWidth("255") - 2, 30, LCD.textWidth("255") + 2, 15, TFT_BG);
+  LCD.drawString(str, TFT_W - LCD.textWidth(str) - 2, 30);
 }
 
 static void changeLcdBrightness(uint8_t value) {

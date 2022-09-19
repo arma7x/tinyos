@@ -29,6 +29,8 @@
 #define GMT_OFFSET_SEC 28800
 #define DAYLIGHT_OFFSET_SEC 0
 
+#define ON "ON"
+#define OFF "OFF"
 
 #ifdef __cplusplus
  extern "C" {
