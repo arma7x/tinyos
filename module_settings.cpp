@@ -14,14 +14,15 @@
 #endif
 
 
-#define UTC_MENU 41
+#define TZ_LIST 41
 #define NUM_MENU 4
 
 static void drawBrightnessLevel();
 static void drawWifiStatus();
+static void drawTimezone();
 
 static uint8_t index_menu = 0;
-static uint8_t index_utc = 0;
+static uint8_t index_tz = 0;
 
 static const Menu nav_menu[NUM_MENU] = {
   { epd_bitmap_wi_fi, "Wi-Fi" },
@@ -30,7 +31,7 @@ static const Menu nav_menu[NUM_MENU] = {
   { epd_bitmap_globe, "Timezone" }
 };
 
-const char *utc_list[UTC_MENU] = { "+01", "+02", "+03", "+03:30", "+04", "+04:30", "+05", "+05:30",
+const char *tz_list[TZ_LIST] = { "+01", "+02", "+03", "+03:30", "+04", "+04:30", "+05", "+05:30",
 "+05:45", "+06", "+06:30", "+07", "+08", "+08:45", "+09", "+09:30", "+10", "+10:30",
 "+11", "+11:00", "+12", "+12:45", "+13", "+13:45", "+14", "-01", "-02", "-02:30",
 "-03", "-03:30", "-04", "-04:30", "-05", "-06", "-07", "-08", "-09", "-09:30",
@@ -58,6 +59,10 @@ static void drawMenuIcon() {
     drawWifiStatus();
   } else if (index_menu == 1) {
     drawBrightnessLevel();
+  } else if (index_menu == 2) {
+
+  } else if (index_menu == 3) {
+    drawTimezone();
   }
 }
 
@@ -80,8 +85,15 @@ static void drawWifiStatus() {
   }
 }
 
+static void drawTimezone() {
+  index_tz = getPreferences().getChar("tz", 0);
+  LCD.setTextFont(2);
+  LCD.fillRect(TFT_W - 41 - 2, 30, 41 + 2, 15, TFT_BG);
+  LCD.drawString(tz_list[index_tz], TFT_W - LCD.textWidth(tz_list[index_tz]) - 2, 30);
+}
+
 static void drawBrightnessLevel() {
-  uint8_t lcd_b = getPreferences().getUChar("lcd_b", 15);
+  uint8_t lcd_b = getPreferences().getUChar("lcd_b", 0);
   char str[4];
   sprintf(str, "%d", lcd_b);
   LCD.setTextFont(2);
@@ -115,6 +127,14 @@ static void changeWifiStatus(bool value) {
   drawWifiStatus();
 }
 
+static void changeTimezone(int8_t i) {
+  if (index_tz + i > -1 && index_tz + i < TZ_LIST) {
+    index_tz += i;
+    getPreferences().putChar("tz", index_tz);
+    drawTimezone();
+  }
+}
+
 static void _init(int num, ...) {
   clearDisplaySafeArea();
   drawMenuIcon();
@@ -144,6 +164,10 @@ static void onKeyRight( ) {
     changeWifiStatus(1);
   } else if (index_menu == 1) {
     changeLcdBrightness(1);
+  } else if (index_menu == 2) {
+   //
+  } else if (index_menu == 3) {
+    changeTimezone(1);
   }
 }
 
@@ -152,6 +176,10 @@ static void onKeyLeft() {
     changeWifiStatus(0);
   } else if (index_menu == 1) {
     changeLcdBrightness(-1);
+  } else if (index_menu == 2) {
+   //
+  } else if (index_menu == 3) {
+    changeTimezone(-1);
   }
 }
 
