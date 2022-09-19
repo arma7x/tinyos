@@ -13,18 +13,28 @@
  extern "C" {
 #endif
 
+
+#define UTC_MENU 41
+#define NUM_MENU 4
+
 static void drawBrightnessLevel();
 static void drawWifiStatus();
 
 static uint8_t index_cursor = 0;
-
-#define NUM_MENU 3
+static uint8_t index_utc = 0;
 
 static const Menu nav_menu[NUM_MENU] = {
   { epd_bitmap_wi_fi, "Wi-Fi" },
   { epd_bitmap_sun, "Brightness" },
-  { epd_bitmap_clock, "Sync Clock" }
+  { epd_bitmap_clock, "Sync Clock" },
+  { epd_bitmap_globe, "Timezone" }
 };
+
+const char *utc_list[UTC_MENU] = { "+01", "+02", "+03", "+03:30", "+04", "+04:30", "+05", "+05:30",
+"+05:45", "+06", "+06:30", "+07", "+08", "+08:45", "+09", "+09:30", "+10", "+10:30",
+"+11", "+11:00", "+12", "+12:45", "+13", "+13:45", "+14", "-01", "-02", "-02:30",
+"-03", "-03:30", "-04", "-04:30", "-05", "-06", "-07", "-08", "-09", "-09:30",
+"-10", "-11", "-12" };
 
 static void clearIcon() {
   LCD.fillRect(2, 15, 50, 50, TFT_BG);
