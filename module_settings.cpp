@@ -14,7 +14,6 @@
 #endif
 
 
-#define TZ_LIST 41
 #define NUM_MENU 4
 
 static void drawBrightnessLevel();
@@ -30,12 +29,6 @@ static const Menu nav_menu[NUM_MENU] = {
   { epd_bitmap_clock, "Sync Clock" },
   { epd_bitmap_globe, "Timezone" }
 };
-
-const char *tz_list[TZ_LIST] = { "+01", "+02", "+03", "+03:30", "+04", "+04:30", "+05", "+05:30",
-"+05:45", "+06", "+06:30", "+07", "+08", "+08:45", "+09", "+09:30", "+10", "+10:30",
-"+11", "+11:00", "+12", "+12:45", "+13", "+13:45", "+14", "-01", "-02", "-02:30",
-"-03", "-03:30", "-04", "-04:30", "-05", "-06", "-07", "-08", "-09", "-09:30",
-"-10", "-11", "-12" };
 
 static void clearIcon() {
   LCD.fillRect(2, 15, 50, 50, TFT_BG);
@@ -85,13 +78,6 @@ static void drawWifiStatus() {
   }
 }
 
-static void drawTimezone() {
-  index_tz = getPreferences().getChar("tz", 0);
-  LCD.setTextFont(2);
-  LCD.fillRect(TFT_W - 41 - 2, 30, 41 + 2, 15, TFT_BG);
-  LCD.drawString(tz_list[index_tz], TFT_W - LCD.textWidth(tz_list[index_tz]) - 2, 30);
-}
-
 static void drawBrightnessLevel() {
   uint8_t lcd_b = getPreferences().getUChar("lcd_b", 0);
   char str[4];
@@ -99,6 +85,13 @@ static void drawBrightnessLevel() {
   LCD.setTextFont(2);
   LCD.fillRect(TFT_W - LCD.textWidth("255") - 2, 30, LCD.textWidth("255") + 2, 15, TFT_BG);
   LCD.drawString(str, TFT_W - LCD.textWidth(str) - 2, 30);
+}
+
+static void drawTimezone() {
+  index_tz = getPreferences().getUChar("tz", 0);
+  LCD.setTextFont(2);
+  LCD.fillRect(TFT_W - 41 - 2, 30, 41 + 2, 15, TFT_BG);
+  LCD.drawString(TZ_LIST[index_tz], TFT_W - LCD.textWidth(TZ_LIST[index_tz]) - 2, 30);
 }
 
 static void changeLcdBrightness(uint8_t value) {
@@ -128,9 +121,9 @@ static void changeWifiStatus(bool value) {
 }
 
 static void changeTimezone(int8_t i) {
-  if (index_tz + i > -1 && index_tz + i < TZ_LIST) {
+  if (index_tz + i > -1 && index_tz + i < TZ_NUM) {
     index_tz += i;
-    getPreferences().putChar("tz", index_tz);
+    getPreferences().putUChar("tz", index_tz);
     drawTimezone();
   }
 }

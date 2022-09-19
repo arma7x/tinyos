@@ -32,9 +32,13 @@
 #define ON "ON"
 #define OFF "OFF"
 
+#define TZ_NUM 41
+
 #ifdef __cplusplus
  extern "C" {
 #endif
+
+extern const char *TZ_LIST[TZ_NUM];
 
 Preferences getPreferences();
 
