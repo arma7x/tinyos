@@ -20,7 +20,7 @@
 static void drawBrightnessLevel();
 static void drawWifiStatus();
 
-static uint8_t index_cursor = 0;
+static uint8_t index_menu = 0;
 static uint8_t index_utc = 0;
 
 static const Menu nav_menu[NUM_MENU] = {
@@ -52,11 +52,11 @@ static void drawMenuIcon() {
   clearLabel();
   LCD.setTextFont(2);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
-  LCD.drawString(nav_menu[index_cursor].title, 54, 30);
-  LCD.drawBitmap(2, 15, nav_menu[index_cursor].icon, 50, 50, TFT_BLACK);
-  if (index_cursor == 0) {
+  LCD.drawString(nav_menu[index_menu].title, 54, 30);
+  LCD.drawBitmap(2, 15, nav_menu[index_menu].icon, 50, 50, TFT_BLACK);
+  if (index_menu == 0) {
     drawWifiStatus();
-  } else if (index_cursor == 1) {
+  } else if (index_menu == 1) {
     drawBrightnessLevel();
   }
 }
@@ -123,45 +123,45 @@ static void _init(int num, ...) {
 static void _destroy() {}
 
 static void onKeyUp() {
-   if (index_cursor - 1 < 0) {
-      index_cursor = NUM_MENU - 1;
+   if (index_menu - 1 < 0) {
+      index_menu = NUM_MENU - 1;
    } else {
-      index_cursor--;
+      index_menu--;
    }
    drawMenuIcon();
 }
 
 static void onKeyDown( ) {
-  index_cursor++;
-  if (index_cursor >= NUM_MENU) {
-    index_cursor = 0;
+  index_menu++;
+  if (index_menu >= NUM_MENU) {
+    index_menu = 0;
   }
   drawMenuIcon();
 }
 
 static void onKeyRight( ) {
-  if (index_cursor == 0) {
+  if (index_menu == 0) {
     changeWifiStatus(1);
-  } else if (index_cursor == 1) {
+  } else if (index_menu == 1) {
     changeLcdBrightness(1);
   }
 }
 
 static void onKeyLeft() {
-  if (index_cursor == 0) {
+  if (index_menu == 0) {
     changeWifiStatus(0);
-  } else if (index_cursor == 1) {
+  } else if (index_menu == 1) {
     changeLcdBrightness(-1);
   }
 }
 
 static void onKeyMid() {
-  if (index_cursor == 0 && WiFi.getMode() != WIFI_MODE_NULL) {
+  if (index_menu == 0 && WiFi.getMode() != WIFI_MODE_NULL) {
     ModuleSwitcher(GetModuleWiFi());
     GetActiveModule().Init(0);
-  } else if (index_cursor == 1) {
+  } else if (index_menu == 1) {
 
-  } else if (index_cursor == 2) {
+  } else if (index_menu == 2) {
     if (SyncClockPid != NULL) {
       vTaskResume(SyncClockPid);
     } else {
@@ -173,7 +173,7 @@ static void onKeyMid() {
 static void onKeySet() {}
 
 static void onKeyReset( ) {
-  index_cursor = 0;
+  index_menu = 0;
   GetActiveModule().Destroy();
   ModuleSwitcher(GetModuleMenu());
   GetActiveModule().Init(0);
