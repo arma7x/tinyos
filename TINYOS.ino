@@ -13,7 +13,7 @@ void taskbh1750(void *pvParameters) {
       float lux = lightMeter.readLightLevel();
       Serial.print(F("\nLight: "));
       Serial.print(lux);
-      Serial.println(F(" lx"));
+      Serial.println(F(" lx\n"));
     }
     vTaskDelay(30000);
   }
@@ -33,7 +33,7 @@ void setup()
 
   WiFi.mode(WIFI_MODE_STA);
   WiFi.mode(WIFI_MODE_NULL);
-  
+
   initDisplay();
   initLightSensor();
 
@@ -42,9 +42,9 @@ void setup()
   ModuleSwitcher(GetModuleHomescreen());
   GetActiveModule().Init(0);
 
-  watch();  
+  watch();
   Serial.println(F("RUNNING TINYOS"));
-  
+
   xTaskCreatePinnedToCore(taskbh1750, "taskbh1750", 1024, NULL, 3, NULL, ARDUINO_RUNNING_CORE);
 }
 

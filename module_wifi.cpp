@@ -75,7 +75,6 @@ void displayNetwork() {
     default:
       LCD.drawString(F("UNKNOWN"), floor((TFT_W - LCD.textWidth(F("UNKNOWN"))) / 2), 57);
     }
-
 }
 
 void taskScanWifi(void *pvParameters) {
