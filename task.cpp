@@ -40,11 +40,10 @@ void TaskUpdateClock(void *pvParameters) {
 
 void TaskWatchWifiConnection(void *pvParameters) {
   for (;;) {
+    Serial.println("123");
     if (WiFi.status() != WL_CONNECTED) {
       updateWifiStatus();
       vTaskSuspend(WatchWifiConnectionPid);
-      vTaskDelete(WatchWifiConnectionPid);
-      WatchWifiConnectionPid = NULL;
     }
     vTaskDelay(5000);
   }

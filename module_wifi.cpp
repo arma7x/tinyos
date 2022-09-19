@@ -111,6 +111,8 @@ void connectWifi(const char *ssid, char *password) {
   Serial.println(F("Connected to the WiFi network"));
   if (WatchWifiConnectionPid == NULL) {
     xTaskCreatePinnedToCore(TaskWatchWifiConnection, "TaskWatchWifiConnection", 1024, NULL, 3, &WatchWifiConnectionPid, ARDUINO_RUNNING_CORE);
+  } else {
+    vTaskResume(WatchWifiConnectionPid);
   }
 }
 
