@@ -9,19 +9,19 @@
  extern "C" {
 #endif
 
-TaskHandle_t syncClockPid;
-TaskHandle_t watchWifiConnectionPid;
+TaskHandle_t SyncClockPid;
+TaskHandle_t WatchWifiConnectionPid;
 
 void TaskSyncClock(void *pvParameters) {
   for (;;) {
     if (WiFi.getMode() == WIFI_MODE_NULL) {
-      vTaskSuspend(syncClockPid);
+      vTaskSuspend(SyncClockPid);
     }
     if (WiFi.status() == WL_CONNECTED) {
       struct tm timeinfo;
       configTime(GMT_OFFSET_SEC, DAYLIGHT_OFFSET_SEC, NTP_SERVER);
       if(getLocalTime(&timeinfo)) {
-        vTaskSuspend(syncClockPid);
+        vTaskSuspend(SyncClockPid);
       }
     }
     vTaskDelay(1000);
@@ -42,9 +42,9 @@ void TaskWatchWifiConnection(void *pvParameters) {
   for (;;) {
     if (WiFi.status() != WL_CONNECTED) {
       updateWifiStatus();
-      vTaskSuspend(watchWifiConnectionPid);
-      vTaskDelete(watchWifiConnectionPid);
-      watchWifiConnectionPid = NULL;
+      vTaskSuspend(WatchWifiConnectionPid);
+      vTaskDelete(WatchWifiConnectionPid);
+      WatchWifiConnectionPid = NULL;
     }
     vTaskDelay(5000);
   }

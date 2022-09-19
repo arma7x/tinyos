@@ -152,10 +152,10 @@ static void onKeyMid() {
   } else if (index_cursor == 1) {
 
   } else if (index_cursor == 2) {
-    if (syncClockPid != NULL) {
-      vTaskResume(syncClockPid);
+    if (SyncClockPid != NULL) {
+      vTaskResume(SyncClockPid);
     } else {
-      xTaskCreatePinnedToCore(TaskSyncClock, "TaskSyncClock", 2048, NULL, 3, &syncClockPid, ARDUINO_RUNNING_CORE);
+      xTaskCreatePinnedToCore(TaskSyncClock, "TaskSyncClock", 2048, NULL, 3, &SyncClockPid, ARDUINO_RUNNING_CORE);
     }
   }
 }

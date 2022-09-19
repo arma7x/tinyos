@@ -6,8 +6,8 @@
  extern "C" {
 #endif
 
-extern TaskHandle_t syncClockPid;
-extern TaskHandle_t watchWifiConnectionPid;
+extern TaskHandle_t SyncClockPid;
+extern TaskHandle_t WatchWifiConnectionPid;
 
 void TaskUpdateClock(void*);
 void TaskSyncClock(void*);
