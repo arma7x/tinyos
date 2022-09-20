@@ -10,6 +10,8 @@
  extern "C" {
 #endif
 
+const uint8_t LEFT_PAD = floor((TFT_W - (11 * 14)) / 2);
+
 typedef void(*Callback)(char*);
 
 static void focusChar(bool);
@@ -36,14 +38,14 @@ static char getCharacter(uint8_t _y, uint8_t _x) {
   char ch = keyboards[_y][_x];
   if (caps_lock == 1 && ch >= 97 && ch <= 122) {
     ch = ch - 32;
-  } else if (_y == 2 && _x == 9) {
+  } else if (_y == 3 && _x == 13) {
     ch = caps_lock == 1 ? 'a' : 'A';
   }
   return ch;
 }
 
 static void renderText() {
-  LCD.fillRect(0, 12, 160, 22, TFT_BG);
+  LCD.fillRect(0, 11, 160, 11, TFT_BG);
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   LCD.drawString(text, 2, 13);
@@ -52,26 +54,26 @@ static void renderText() {
 static void focusChar(bool f) {
   LCD.setTextFont(1);
   if (f == 0) {
-    LCD.fillRect(30 + (11 * x), 36 + (11 * y), 11, 11, TFT_BLACK);
+    LCD.fillRect(LEFT_PAD + (11 * x), 25 + (11 * y), 11, 11, TFT_BLACK);
     LCD.setTextColor(TFT_BG, TFT_BLACK);
   } else {
-    LCD.fillRect(30 + (11 * x), 36 + (11 * y), 11, 11, TFT_BG);
+    LCD.fillRect(LEFT_PAD + (11 * x), 25 + (11 * y), 11, 11, TFT_BG);
     LCD.setTextColor(TFT_BLACK, TFT_BG);
   }
-  LCD.drawChar(getCharacter(y, x), 30 + (11 * x) + 3, 36 + (11 * y) + 2);
+  LCD.drawChar(getCharacter(y, x), LEFT_PAD + (11 * x) + 3, 25 + (11 * y) + 2);
 }
 
 static void drawKeyboardUI() {
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BG, TFT_BLACK);
-  uint8_t x_axis = 30; // +11
-  uint8_t y_axis = 36; // +11
-  for (uint8_t _y=0;_y<4;_y++) {
-    for (uint8_t _x=0;_x<10;_x++) {
+  uint8_t x_axis = LEFT_PAD; // +11
+  uint8_t y_axis = 25; // +11
+  for (uint8_t _y=0;_y<KEYBOARD_COLUMN;_y++) {
+    for (uint8_t _x=0;_x<KEYBOARD_ROW;_x++) {
       LCD.drawChar(getCharacter(_y, _x), x_axis + 3, y_axis + 2);
       x_axis += 11;
     }
-    x_axis = 30;
+    x_axis = LEFT_PAD;
     y_axis += 11;
   }
   focusChar(1);
@@ -112,7 +114,7 @@ static void _destroy() {
 static void onKeyUp() {
   focusChar(0);
   if (y == 0) {
-    y = 3;
+    y = KEYBOARD_COLUMN - 1;
   } else {
     y--;
   }
@@ -121,7 +123,7 @@ static void onKeyUp() {
 
 static void onKeyDown( ) {
   focusChar(0);
-  if (y == 3) {
+  if (y == KEYBOARD_COLUMN - 1) {
     y = 0;
   } else {
     y++;
@@ -131,7 +133,7 @@ static void onKeyDown( ) {
 
 static void onKeyRight( ) {
   focusChar(0);
-  if (x == 9) {
+  if (x == KEYBOARD_ROW - 1) {
     x = 0;
   } else {
     x++;
@@ -142,7 +144,7 @@ static void onKeyRight( ) {
 static void onKeyLeft() {
   focusChar(0);
   if (x == 0) {
-    x = 9;
+    x = KEYBOARD_ROW - 1;
   } else {
     x--;
   }

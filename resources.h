@@ -8,7 +8,10 @@
  extern "C" {
 #endif
 
-extern const char keyboards[4][10] PROGMEM;
+#define KEYBOARD_COLUMN 5
+#define KEYBOARD_ROW 14
+
+extern const char keyboards[KEYBOARD_COLUMN][KEYBOARD_ROW] PROGMEM;
 extern const uint8_t wallpaper[] PROGMEM;
 extern const uint8_t epd_bitmap_weather[] PROGMEM;
 extern const uint8_t epd_bitmap_foreign_currency[] PROGMEM;
