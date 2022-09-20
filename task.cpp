@@ -10,7 +10,9 @@
 #endif
 
 TaskHandle_t SyncClockPid;
+static time_t SyncClockTime;
 TaskHandle_t WatchWifiConnectionPid;
+static time_t WatchWifiConnectionTime;
 
 static int calcTimezoneOffset() {
   int offset = 0;
@@ -28,12 +30,14 @@ static int calcTimezoneOffset() {
 void TaskSyncClock(void *pvParameters) {
   for (;;) {
     if (WiFi.getMode() == WIFI_MODE_NULL) {
+      SyncClockTime = time(NULL) + 2;
       vTaskSuspend(SyncClockPid);
     }
     if (WiFi.status() == WL_CONNECTED) {
       struct tm timeinfo;
       configTime(calcTimezoneOffset(), DAYLIGHT_OFFSET_SEC, NTP_SERVER);
       if(getLocalTime(&timeinfo)) {
+        SyncClockTime = time(NULL) + 2;
         vTaskSuspend(SyncClockPid);
       }
     }
@@ -55,9 +59,31 @@ void TaskWatchWifiConnection(void *pvParameters) {
   for (;;) {
     if (WiFi.status() != WL_CONNECTED) {
       updateWifiStatus();
+      WatchWifiConnectionTime = time(NULL) + 2;
       vTaskSuspend(WatchWifiConnectionPid);
     }
     vTaskDelay(5000);
+  }
+}
+
+void TaskGC(void *pvParameters) {
+  for (;;) {
+    time_t seconds = time(NULL);
+    if (SyncClockTime != NULL) {
+      if (seconds > SyncClockTime) {
+        vTaskDelete(SyncClockPid);
+        SyncClockPid = NULL;
+        SyncClockTime = NULL;
+      }
+    }
+    if (WatchWifiConnectionTime != NULL) {
+      if (seconds > WatchWifiConnectionTime) {
+        vTaskDelete(WatchWifiConnectionPid);
+        WatchWifiConnectionPid = NULL;
+        WatchWifiConnectionTime = NULL;
+      }
+    }
+    vTaskDelay(3000);
   }
 }
 

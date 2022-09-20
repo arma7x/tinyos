@@ -3,6 +3,7 @@
 #include "driver.h"
 #include "register_module.h"
 #include "notification_bar.h"
+#include "task.h"
 
 
 void taskbh1750(void *pvParameters) {
@@ -28,6 +29,8 @@ void setup()
   pinMode(LFT, INPUT_PULLUP);
   pinMode(DWN, INPUT_PULLUP);
   pinMode(UP, INPUT_PULLUP);
+
+  xTaskCreatePinnedToCore(TaskGC, "TaskGC", 1024, NULL, 3, NULL, ARDUINO_RUNNING_CORE);
 
   initDriver();
 
