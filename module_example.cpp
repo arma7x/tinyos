@@ -1,4 +1,3 @@
-#include <WiFi.h>
 #include <pgmspace.h>
 #include <stdint.h>
 #include <math.h>

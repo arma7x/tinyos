@@ -63,7 +63,10 @@ static void onKeyRight( ) {}
 static void onKeyLeft() {}
 
 static void onKeyMid() {
-  if (menu_cursor == 2) {
+  if (menu_cursor == 0) {
+    ModuleSwitcher(GetModuleWeather());
+    GetActiveModule().Init(0);
+  } else if (menu_cursor == 2) {
     ModuleSwitcher(GetModuleTemperature());
     GetActiveModule().Init(0);
   } else if (menu_cursor == 4) {

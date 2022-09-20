@@ -16,6 +16,7 @@ Module GetModuleKeyboardUI();
 Module GetModuleSettings();
 Module GetModuleWiFi();
 Module GetModuleTemperature();
+Module GetModuleWeather();
 
 
 #ifdef __cplusplus
