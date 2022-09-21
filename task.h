@@ -8,10 +8,13 @@
 
 extern TaskHandle_t SyncClockPid;
 extern TaskHandle_t WatchWifiConnectionPid;
+extern TaskHandle_t ConnectToWifiPid;
+extern time_t ConnectToWifiTime;
 
 void TaskUpdateClock(void*);
 void TaskSyncClock(void*);
 void TaskWatchWifiConnection(void*);
+void TaskConnectToWifi(void*);
 void TaskGC(void*);
 
 

@@ -113,6 +113,11 @@ static void changeWifiStatus(bool value) {
     if ((WiFi.status() == WL_CONNECTED)) {
       WiFi.disconnect(true);
     }
+    if (ConnectToWifiPid != NULL) {
+      vTaskDelete(ConnectToWifiPid);
+      ConnectToWifiPid = NULL;
+      ConnectToWifiTime = NULL;
+    }
     WiFi.mode(WIFI_MODE_NULL);
   } else {
     WiFi.mode(WIFI_MODE_STA);

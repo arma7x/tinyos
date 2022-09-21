@@ -3,7 +3,9 @@
 #include <pgmspace.h>
 #include <stdint.h>
 #include "env.h"
+#include "driver.h"
 #include "notification_bar.h"
+#include "types.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -13,6 +15,8 @@ TaskHandle_t SyncClockPid;
 static time_t SyncClockTime;
 TaskHandle_t WatchWifiConnectionPid;
 static time_t WatchWifiConnectionTime;
+TaskHandle_t ConnectToWifiPid;
+time_t ConnectToWifiTime;
 
 static int calcTimezoneOffset() {
   int offset = 0;
@@ -27,6 +31,7 @@ static int calcTimezoneOffset() {
   }
   return offset;
 }
+
 void TaskSyncClock(void *pvParameters) {
   for (;;) {
     if (WiFi.getMode() == WIFI_MODE_NULL) {
@@ -66,6 +71,28 @@ void TaskWatchWifiConnection(void *pvParameters) {
   }
 }
 
+void TaskConnectToWifi(void *pvParameters) {
+  Wifi_Credential *credential = (Wifi_Credential*) pvParameters;
+  for (;;) {
+    WiFi.begin(credential->ssid, (*credential).password);
+    while (WiFi.status() != WL_CONNECTED) {
+      delay(1000);
+      LCD.drawString("Wi-Fi:CONNECTING", 1, 1);
+    }
+    LCD.setTextFont(1);
+    LCD.fillRect(0, 1, 96, 10, TFT_BG);
+    LCD.drawString("Wi-Fi:CONNECTED", 1, 1);
+    Serial.println(F("Connected to the WiFi network"));
+    if (WatchWifiConnectionPid == NULL) {
+      xTaskCreatePinnedToCore(TaskWatchWifiConnection, "TaskWatchWifiConnection", 1024, NULL, 3, &WatchWifiConnectionPid, ARDUINO_RUNNING_CORE);
+    } else {
+      vTaskResume(WatchWifiConnectionPid);
+    }
+    ConnectToWifiTime = time(NULL) + 2;
+    vTaskSuspend(ConnectToWifiPid);
+  }
+}
+
 void TaskGC(void *pvParameters) {
   for (;;) {
     time_t seconds = time(NULL);
@@ -81,6 +108,13 @@ void TaskGC(void *pvParameters) {
         vTaskDelete(WatchWifiConnectionPid);
         WatchWifiConnectionPid = NULL;
         WatchWifiConnectionTime = NULL;
+      }
+    }
+    if (ConnectToWifiTime != NULL) {
+      if (seconds > ConnectToWifiTime) {
+        vTaskDelete(ConnectToWifiPid);
+        ConnectToWifiPid = NULL;
+        ConnectToWifiTime = NULL;
       }
     }
     vTaskDelay(3000);

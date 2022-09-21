@@ -100,19 +100,11 @@ void taskScanWifi(void *pvParameters) {
 }
 
 void connectWifi(const char *ssid, char *password) {
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    LCD.drawString("Wi-Fi:CONNECTING", 1, 1);
-  }
-  LCD.setTextFont(1);
-  LCD.fillRect(0, 1, 96, 10, TFT_BG);
-  LCD.drawString("Wi-Fi:CONNECTED", 1, 1);
-  Serial.println(F("Connected to the WiFi network"));
-  if (WatchWifiConnectionPid == NULL) {
-    xTaskCreatePinnedToCore(TaskWatchWifiConnection, "TaskWatchWifiConnection", 1024, NULL, 3, &WatchWifiConnectionPid, ARDUINO_RUNNING_CORE);
+  Wifi_Credential credential = { ssid, password };
+  if (ConnectToWifiPid == NULL) {
+    xTaskCreatePinnedToCore(TaskConnectToWifi, "TaskConnectToWifi", 2048, &credential, 3, &ConnectToWifiPid, ARDUINO_RUNNING_CORE);
   } else {
-    vTaskResume(WatchWifiConnectionPid);
+    vTaskResume(ConnectToWifiPid);
   }
 }
 

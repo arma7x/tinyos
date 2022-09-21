@@ -25,6 +25,11 @@ typedef struct menu {
   char* title;
 } Menu;
 
+typedef struct wifi_credential {
+  const char *ssid;
+  const char *password;
+} Wifi_Credential;
+
 #ifdef __cplusplus
 }
 #endif
