@@ -5,14 +5,20 @@
 #include "types.h"
 #include "register_module.h"
 #include "resources.h"
+#include "task.h"
+#include "widgets.h"
 
 #ifdef __cplusplus
  extern "C" {
 #endif
 
 void drawHomescreen() {
+  time_t t = time(NULL);
+  struct tm *tm = localtime(&t);
+  t = t + calcTimezoneOffset();
+  tm = localtime(&t);
+  drawHomescreenWidget(tm);
   LCD.setTextFont(1);
-  // LCD.drawBitmap(45, 10, wallpaper, 70, 70, TFT_BLACK);
   uint8_t w_w = LCD.textWidth("Wi-Fi");
   uint8_t m_w = LCD.textWidth("Menu");
   uint8_t s_w = LCD.textWidth("Settings");

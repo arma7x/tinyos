@@ -11,6 +11,7 @@ extern TaskHandle_t WatchWifiConnectionPid;
 extern TaskHandle_t ConnectToWifiPid;
 extern time_t ConnectToWifiTime;
 
+int calcTimezoneOffset();
 void TaskUpdateClock(void*);
 void TaskSyncClock(void*);
 void TaskWatchWifiConnection(void*);

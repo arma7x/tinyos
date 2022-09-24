@@ -10,6 +10,9 @@
  extern "C" {
 #endif
 
+const char *MONTHS[12] PROGMEM = {"JAN", "FEB", "MAC", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
+const char *DAYS[7] PROGMEM = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
+
 void updateWifiStatus();
 void setWifiStatus(bool);
 
@@ -31,7 +34,20 @@ void drawClockWidget(struct tm* tm) {
 }
 
 void drawHomescreenWidget(struct tm* tm) {
-  
+  LCD.setTextFont(1);
+  char tpl[17];
+  uint8_t t_w = LCD.textWidth("THU, 01 JAN 1970");
+  Serial.printf("%s, %02d %s %d\n", DAYS[(*tm).tm_wday], (*tm).tm_mday, MONTHS[(*tm).tm_mon], (*tm).tm_year + 1900);
+  sprintf(tpl, "%s, %02d %s %d", DAYS[(*tm).tm_wday], (*tm).tm_mday, MONTHS[(*tm).tm_mon], (*tm).tm_year + 1900);
+  LCD.fillRect(floor((TFT_W - t_w) / 2), 12, t_w, 9, TFT_BG);
+  LCD.drawString(tpl, floor((TFT_W - t_w) / 2), 12);
+  memset(&tpl[0], 0, sizeof(tpl));
+  LCD.setTextFont(1);
+  LCD.setFreeFont(&FreeMonoBold12pt7b);
+  uint8_t b_w = LCD.textWidth("99:99");
+  sprintf(tpl, "%02d:%02d", (*tm).tm_hour, (*tm).tm_min);
+  LCD.fillRect(floor((TFT_W - b_w) / 2), 21, b_w, 20, TFT_BG);
+  LCD.drawString(tpl, floor((TFT_W - b_w) / 2), 21);
 }
 
 void initNotificationBar() {

@@ -6,6 +6,7 @@
 #include "driver.h"
 #include "widgets.h"
 #include "types.h"
+#include "register_module.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -18,7 +19,7 @@ static time_t WatchWifiConnectionTime;
 TaskHandle_t ConnectToWifiPid;
 time_t ConnectToWifiTime;
 
-static int calcTimezoneOffset() {
+int calcTimezoneOffset() {
   int offset = 0;
   uint8_t idx = getPreferences().getUChar("tz", 0);
   offset += (((TZ_LIST[idx][1] - '0') * 10) + (TZ_LIST[idx][2] - '0')) * 60;
@@ -57,6 +58,9 @@ void TaskUpdateClock(void *pvParameters) {
     t = t + calcTimezoneOffset();
     tm = localtime(&t);
     drawClockWidget(tm);
+    if (GetActiveModule().name == "HOMESCREEN") {
+      drawHomescreenWidget(tm);
+    }
     vTaskDelay(1000);
   }
 }
