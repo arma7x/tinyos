@@ -6,10 +6,11 @@
 extern "C" {
 #endif
 
-  void drawClock(uint8_t, uint8_t, uint8_t);
-  void updateWifiStatus();
-  void setWifiStatus(bool);
-  void initNotificationBar();
+void drawClockWidget(struct tm*);
+void drawHomescreenWidget(struct tm*);
+void updateWifiStatus();
+void setWifiStatus(bool);
+void initNotificationBar();
 
 
 #ifdef __cplusplus

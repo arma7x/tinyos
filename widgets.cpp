@@ -21,17 +21,17 @@ void formatDigit(char* str, char n) {
   }
 }
 
-void drawClock(uint8_t h, uint8_t m, uint8_t s) {
+void drawClockWidget(struct tm* tm) {
   char hms[9];
-  char hs[3], ms[3], ss[3];
-  formatDigit(hs, h);
-  formatDigit(ms, m);
-  formatDigit(ss, s);
-  sprintf(hms, "%s:%s:%s", hs, ms, ss);
+  sprintf(hms, "%02d:%02d:%02d", (*tm).tm_hour, (*tm).tm_min, (*tm).tm_sec);
   hms[8] = '\0';
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   LCD.drawString(hms, 112, 1);
+}
+
+void drawHomescreenWidget(struct tm* tm) {
+  
 }
 
 void initNotificationBar() {

@@ -53,9 +53,10 @@ void TaskSyncClock(void *pvParameters) {
 void TaskUpdateClock(void *pvParameters) {
   for (;;) {
     time_t t = time(NULL);
-    struct tm *tmp = localtime(&t);
+    struct tm *tm = localtime(&t);
     t = t + calcTimezoneOffset();
-    drawClock((uint8_t) ((t / 3600) % 24), (uint8_t) ((t / 60) % 60), (uint8_t) (t % 60));
+    tm = localtime(&t);
+    drawClockWidget(tm);
     vTaskDelay(1000);
   }
 }
