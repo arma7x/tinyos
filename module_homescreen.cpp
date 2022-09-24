@@ -15,8 +15,8 @@
 void drawHomescreen() {
   time_t t = time(NULL);
   struct tm *tm = localtime(&t);
-  t = t + calcTimezoneOffset();
-  tm = localtime(&t);
+  // t = t + calcTimezoneOffset();
+  // tm = localtime(&t);
   drawHomescreenWidget(tm);
   LCD.setTextFont(1);
   uint8_t w_w = LCD.textWidth("Wi-Fi");

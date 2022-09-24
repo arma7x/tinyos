@@ -55,8 +55,8 @@ void TaskUpdateClock(void *pvParameters) {
   for (;;) {
     time_t t = time(NULL);
     struct tm *tm = localtime(&t);
-    t = t + calcTimezoneOffset();
-    tm = localtime(&t);
+    // t = t + calcTimezoneOffset();
+    // tm = localtime(&t);
     drawClockWidget(tm);
     if (GetActiveModule().name == "HOMESCREEN") {
       drawHomescreenWidget(tm);
