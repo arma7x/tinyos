@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "env.h"
 #include "driver.h"
-#include "notification_bar.h"
+#include "widgets.h"
 #include "types.h"
 
 #ifdef __cplusplus

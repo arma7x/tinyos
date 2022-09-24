@@ -2,7 +2,7 @@
 #include "env.h"
 #include "driver.h"
 #include "register_module.h"
-#include "notification_bar.h"
+#include "widgets.h"
 #include "task.h"
 
 

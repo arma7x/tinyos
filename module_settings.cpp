@@ -6,7 +6,7 @@
 #include "types.h"
 #include "register_module.h"
 #include "resources.h"
-#include "notification_bar.h"
+#include "widgets.h"
 #include "task.h"
 
 #ifdef __cplusplus
@@ -188,7 +188,7 @@ static void onKeyMid() {
   } else if (index_menu == 1) {
 
   } else if (index_menu == 2) {
-    if (SyncClockPid == NULL) { 
+    if (SyncClockPid == NULL) {
       xTaskCreatePinnedToCore(TaskSyncClock, "TaskSyncClock", 2048, NULL, 3, &SyncClockPid, ARDUINO_RUNNING_CORE);
     } else {
       vTaskResume(SyncClockPid);
