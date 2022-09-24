@@ -54,7 +54,10 @@ static void onKeyMid() {
 
 static void onKeySet() {}
 
-static void onKeyReset( ) {}
+static void onKeyReset( ) {
+  ModuleSwitcher(GetModuleSettings());
+  GetActiveModule().Init(0);
+}
 
 static Module homescreen = { "HOMESCREEN", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
