@@ -34,7 +34,7 @@ static void onKeyReset( ) {
   GetActiveModule().Init(0);
 }
 
-Module example = { _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
+Module example = { "EXAMPLE", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
 Module GetModuleExample() {
   return example;

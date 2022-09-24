@@ -178,7 +178,7 @@ static void onKeyReset( ) {
   renderText();
 }
 
-static Module KeyboardUI = { _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
+static Module KeyboardUI = { "KEYBOARD", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
 Module GetModuleKeyboardUI() {
   return KeyboardUI;

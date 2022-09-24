@@ -50,7 +50,7 @@ static void onKeySet() {}
 
 static void onKeyReset( ) {}
 
-static Module homescreen = { _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
+static Module homescreen = { "HOMESCREEN", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
 Module GetModuleHomescreen() {
   return homescreen;

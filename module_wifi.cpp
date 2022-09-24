@@ -201,7 +201,7 @@ static void onKeyReset( ) {
   GetActiveModule().Init(0);
 }
 
-Module wifi = { _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
+Module wifi = { "WIFI", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
 Module GetModuleWiFi() {
   return wifi;

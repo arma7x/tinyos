@@ -9,6 +9,7 @@ typedef void (*KeyEvent) ();
 
 typedef struct module
 {
+  const char *name;
   void (*Init) (int, ...);
   void (*Destroy) ();
   KeyEvent KeyUp;

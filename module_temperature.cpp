@@ -82,7 +82,7 @@ static void onKeyReset( ) {
   GetActiveModule().Init(0);
 }
 
-Module temperature = { _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
+Module temperature = { "TEMPERATURE", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
 Module GetModuleTemperature() {
   return temperature;

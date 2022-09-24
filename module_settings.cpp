@@ -205,7 +205,7 @@ static void onKeyReset( ) {
   GetActiveModule().Init(0);
 }
 
-Module settings = { _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
+Module settings = { "SETTINGS", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
 Module GetModuleSettings() {
   return settings;

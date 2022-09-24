@@ -106,7 +106,7 @@ static void onKeyReset( ) {
   GetActiveModule().Init(0);
 }
 
-Module weather = { _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
+Module weather = { "WEATHER", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
 Module GetModuleWeather() {
   return weather;
