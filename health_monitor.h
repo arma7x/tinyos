@@ -27,15 +27,16 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 uint8_t temprature_sens_read();
 
 void TaskHealthMonitor(void *pvParameters) {
+  float value;
   for (;;) {
-    float temp = (temprature_sens_read() - 32) / 1.8;
-    float mem = ((ESP.getHeapSize() - esp_get_free_heap_size()) * 100) / (float) ESP.getHeapSize();
+    value = (temprature_sens_read() - 32) / 1.8;
     display.clearDisplay();
     display.setTextSize(1);
     display.setCursor(1, 1);
-    display.printf("TEMP: %.2fC  ", temp);
+    display.printf("TEMP: %.2fC  ", value);
     display.setCursor(1, 10);
-    display.printf("RAM : %.2f%% ", mem);
+    value = ((ESP.getHeapSize() - esp_get_free_heap_size()) * 100) / (float) ESP.getHeapSize();
+    display.printf("RAM : %.2f%% ", value);
     display.display();
     vTaskDelay(2000);
   }
