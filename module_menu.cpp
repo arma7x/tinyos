@@ -12,14 +12,15 @@
 
 static uint8_t menu_cursor = 0;
 
-#define NUM_MENU 5
+#define NUM_MENU 6
 
 static const Menu nav_menu[NUM_MENU] = {
   { epd_bitmap_weather, "Weather" },
   { epd_bitmap_foreign_currency, "Currency" },
   { epd_bitmap_thermometer, "Temperature" },
   { epd_bitmap_calendar, "Calendar" },
-  { epd_bitmap_settings, "Settings" }
+  { epd_bitmap_settings, "Settings" },
+  { epd_bitmap_about, "System Info" },
 };
 
 static void drawMenuIcon() {
@@ -72,6 +73,9 @@ static void onKeyMid() {
   } else if (menu_cursor == 4) {
     ModuleSwitcher(GetModuleSettings());
     GetActiveModule().Init(1, 0);
+  } else if (menu_cursor == 5) {
+    ModuleSwitcher(GetModuleSystemInfo());
+    GetActiveModule().Init(0);
   }
 }
 

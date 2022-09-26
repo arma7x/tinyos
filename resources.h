@@ -12,7 +12,6 @@
 #define KEYBOARD_ROW 14
 
 extern const char keyboards[KEYBOARD_COLUMN][KEYBOARD_ROW] PROGMEM;
-extern const uint8_t wallpaper[] PROGMEM;
 extern const uint8_t epd_bitmap_weather[] PROGMEM;
 extern const uint8_t epd_bitmap_foreign_currency[] PROGMEM;
 extern const uint8_t epd_bitmap_thermometer[] PROGMEM;
@@ -28,6 +27,7 @@ extern const uint8_t epd_bitmap_globe[] PROGMEM;
 extern const uint8_t epd_bitmap_menu_small[] PROGMEM;
 extern const uint8_t epd_bitmap_gear_small[] PROGMEM;
 extern const uint8_t epd_bitmap_wifi_small[] PROGMEM;
+extern const uint8_t epd_bitmap_about[] PROGMEM;
 
 
 #ifdef __cplusplus
