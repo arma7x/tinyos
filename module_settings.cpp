@@ -20,6 +20,7 @@ static void drawBrightnessLevel();
 static void drawWifiStatus();
 static void drawTimezone();
 
+static int shortcut = 0;
 static uint8_t index_menu = 0;
 static uint8_t index_tz = 0;
 
@@ -136,6 +137,14 @@ static void changeTimezone(int8_t i) {
 static void _init(int num, ...) {
   clearDisplaySafeArea();
   drawMenuIcon();
+  va_list arguments;
+  va_start(arguments, num);
+  for (uint8_t a=0; a<num;a++) {
+    if (a == 0) {
+      shortcut = va_arg(arguments, int);
+    }
+  }
+  va_end(arguments);
 }
 
 static void _destroy() {}
@@ -201,8 +210,14 @@ static void onKeySet() {}
 static void onKeyReset( ) {
   index_menu = 0;
   GetActiveModule().Destroy();
-  ModuleSwitcher(GetModuleMenu());
-  GetActiveModule().Init(0);
+  if (shortcut == 0) {
+    ModuleSwitcher(GetModuleMenu());
+    GetActiveModule().Init(0);
+  } else {
+    ModuleSwitcher(GetModuleHomescreen());
+    GetActiveModule().Init(0);
+  }
+  shortcut = 0;
 }
 
 Module settings = { "SETTINGS", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };

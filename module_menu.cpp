@@ -71,7 +71,7 @@ static void onKeyMid() {
     GetActiveModule().Init(0);
   } else if (menu_cursor == 4) {
     ModuleSwitcher(GetModuleSettings());
-    GetActiveModule().Init(0);
+    GetActiveModule().Init(1, 0);
   }
 }
 
