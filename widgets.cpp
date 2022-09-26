@@ -47,8 +47,8 @@ void drawHomescreenWidget(struct tm* tm) {
   LCD.setFreeFont(&FreeSansBold12pt7b);
   uint8_t b_w = LCD.textWidth("99:99");
   sprintf(tpl, "%02d:%02d", (*tm).tm_hour, (*tm).tm_min);
-  LCD.fillRect(floor((TFT_W - b_w) / 2), 21, b_w, 20, TFT_BG);
-  LCD.drawString(tpl, floor((TFT_W - b_w) / 2), 21);
+  LCD.fillRect(floor((TFT_W - b_w) / 2), TFT_H - 21 - 22 - 10, b_w, 20, TFT_BG);
+  LCD.drawString(tpl, floor((TFT_W - b_w) / 2), TFT_H - 21 - 22 - 10);
   LCD.setFreeFont(&FreeSans9pt7b);
   LCD.setTextFont(1);
 }

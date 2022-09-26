@@ -76,9 +76,9 @@ static void onKeyMid() {
       GetActiveModule().Init(1, 0);
       break;
     case 4:
-      break;
       ModuleSwitcher(GetModuleSystemInfo());
       GetActiveModule().Init(0);
+      break;
   }
 }
 
