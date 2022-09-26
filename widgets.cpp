@@ -28,12 +28,14 @@ void drawClockWidget(struct tm* tm) {
   char hms[9];
   sprintf(hms, "%02d:%02d:%02d", (*tm).tm_hour, (*tm).tm_min, (*tm).tm_sec);
   hms[8] = '\0';
+  LCD.setFreeFont(&FreeSans9pt7b);
   LCD.setTextFont(1);
   LCD.setTextColor(TFT_BLACK, TFT_BG);
   LCD.drawString(hms, 112, 1);
 }
 
 void drawHomescreenWidget(struct tm* tm) {
+  LCD.setFreeFont(&FreeSans9pt7b);
   LCD.setTextFont(1);
   char tpl[17];
   uint8_t t_w = LCD.textWidth("THU, 01 JAN 1970");
@@ -47,6 +49,8 @@ void drawHomescreenWidget(struct tm* tm) {
   sprintf(tpl, "%02d:%02d", (*tm).tm_hour, (*tm).tm_min);
   LCD.fillRect(floor((TFT_W - b_w) / 2), 21, b_w, 20, TFT_BG);
   LCD.drawString(tpl, floor((TFT_W - b_w) / 2), 21);
+  LCD.setFreeFont(&FreeSans9pt7b);
+  LCD.setTextFont(1);
 }
 
 void initNotificationBar() {
@@ -56,6 +60,7 @@ void initNotificationBar() {
 }
 
 void setWifiStatus(bool status) {
+  LCD.setFreeFont(&FreeSans9pt7b);
   LCD.setTextFont(1);
   LCD.fillRect(0, 1, 96, 10, TFT_BG);
   if (status == 1) {

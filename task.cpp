@@ -82,8 +82,11 @@ void TaskConnectToWifi(void *pvParameters) {
     WiFi.begin(credential->ssid, (*credential).password);
     while (WiFi.status() != WL_CONNECTED) {
       delay(1000);
+      LCD.setFreeFont(&FreeSans9pt7b);
+      LCD.setTextFont(1);
       LCD.drawString("Wi-Fi:CONNECTING", 1, 1);
     }
+    LCD.setFreeFont(&FreeSans9pt7b);
     LCD.setTextFont(1);
     LCD.fillRect(0, 1, 96, 10, TFT_BG);
     LCD.drawString("Wi-Fi:CONNECTED", 1, 1);
