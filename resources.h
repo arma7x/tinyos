@@ -17,6 +17,7 @@ extern const uint8_t epd_bitmap_foreign_currency[] PROGMEM;
 extern const uint8_t epd_bitmap_thermometer[] PROGMEM;
 extern const uint8_t epd_bitmap_calendar[] PROGMEM;
 extern const uint8_t epd_bitmap_settings[] PROGMEM;
+extern const uint8_t epd_bitmap_about[] PROGMEM;
 extern const uint8_t epd_bitmap_keyboard[] PROGMEM;
 extern const uint8_t epd_bitmap_sun[] PROGMEM;
 extern const uint8_t epd_bitmap_wi_fi[] PROGMEM;
@@ -27,7 +28,7 @@ extern const uint8_t epd_bitmap_globe[] PROGMEM;
 extern const uint8_t epd_bitmap_menu_small[] PROGMEM;
 extern const uint8_t epd_bitmap_gear_small[] PROGMEM;
 extern const uint8_t epd_bitmap_wifi_small[] PROGMEM;
-extern const uint8_t epd_bitmap_about[] PROGMEM;
+extern const uint8_t epd_bitmap_cloudly_small[] PROGMEM;
 
 
 #ifdef __cplusplus

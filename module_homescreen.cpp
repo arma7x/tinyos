@@ -20,11 +20,11 @@ void drawHomescreen() {
   tm = localtime(&t);
   drawHomescreenWidget(tm);
   LCD.setTextFont(1);
-  uint8_t w_w = LCD.textWidth("Wi-Fi");
+  uint8_t w_w = LCD.textWidth("Weather");
   uint8_t m_w = LCD.textWidth("Menu");
   uint8_t s_w = LCD.textWidth("Settings");
-  LCD.drawBitmap(floor((w_w - 12) / 2) + 1, TFT_H - 22, epd_bitmap_wifi_small, 12, 12, TFT_BLACK);
-  LCD.drawString("Wi-Fi", 1, TFT_H - 9);
+  LCD.drawBitmap(floor((w_w - 12) / 2) + 1, TFT_H - 22, epd_bitmap_cloudly_small, 12, 12, TFT_BLACK);
+  LCD.drawString("Weather", 1, TFT_H - 9);
   LCD.drawBitmap(floor((TFT_W - 12) / 2), TFT_H - 22, epd_bitmap_menu_small, 12, 12, TFT_BLACK);
   LCD.drawString("Menu", floor((TFT_W - m_w) / 2), TFT_H - 9);
   LCD.drawBitmap(floor(TFT_W - (s_w + 12) / 2) - 1, TFT_H - 22, epd_bitmap_gear_small, 12, 12, TFT_BLACK);
@@ -54,10 +54,8 @@ static void onKeyMid() {
 }
 
 static void onKeySet() {
-  if (WiFi.getMode() != WIFI_MODE_NULL) {
-    ModuleSwitcher(GetModuleWiFi());
-    GetActiveModule().Init(1, 1);
-  }
+  ModuleSwitcher(GetModuleWeather());
+  GetActiveModule().Init(1, 1);
 }
 
 static void onKeyReset( ) {

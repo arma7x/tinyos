@@ -14,6 +14,8 @@
  extern "C" {
 #endif
 
+static int shortcut = 0;
+
 #define KEYS 19
 #define COLUMNS 5
 
@@ -78,6 +80,14 @@ uint8_t findIndex(const char *key) {
 
 static void _init(int num, ...) {
   clearDisplaySafeArea();
+  va_list arguments;
+  va_start(arguments, num);
+  for (uint8_t a=0; a<num;a++) {
+    if (a == 0) {
+      shortcut = va_arg(arguments, int);
+    }
+  }
+  va_end(arguments);
   WiFiClientSecure client;
   if (WiFi.status() == WL_CONNECTED) {
     LCD.setFreeFont(&FreeSans9pt7b);
@@ -169,8 +179,14 @@ static void onKeySet() {}
 
 static void onKeyReset( ) {
   GetActiveModule().Destroy();
-  ModuleSwitcher(GetModuleMenu());
-  GetActiveModule().Init(0);
+  if (shortcut == 0) {
+    ModuleSwitcher(GetModuleMenu());
+    GetActiveModule().Init(0);
+  } else {
+    ModuleSwitcher(GetModuleHomescreen());
+    GetActiveModule().Init(0);
+  }
+  shortcut = 0;
 }
 
 Module weather = { "WEATHER", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
