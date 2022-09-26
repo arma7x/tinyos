@@ -80,12 +80,16 @@ static void _init(int num, ...) {
   clearDisplaySafeArea();
   WiFiClientSecure client;
   if (WiFi.status() == WL_CONNECTED) {
+    LCD.setFreeFont(&FreeSans9pt7b);
+    LCD.setTextFont(1);
+    LCD.drawString(F("Connecting..."), floor((TFT_W - LCD.textWidth(F("Connecting..."))) / 2), 35);
     client.setCACert(le_root_ca);
     if (!client.connect("wttr.in", 443)) {
-      // Serial.println("Connection failed!");
+      LCD.setFreeFont(&FreeSans9pt7b);
+      LCD.setTextFont(1);
+      LCD.drawString(F("Connection failed!"), floor((TFT_W - LCD.textWidth(F("Connection failed!"))) / 2), 35);
     } else {
-      // Serial.println("Connected to server!");
-      // Make a HTTP request:
+      clearDisplaySafeArea();
       client.println("GET https://wttr.in/?format=%l|%C@%x HTTP/1.0");
       client.println("Host: wttr.in");
       client.println("Connection: close");
@@ -139,10 +143,13 @@ static void _init(int num, ...) {
       LCD.drawString(buff_location, floor((TFT_W - LCD.textWidth(buff_location)) / 2), y_axis);
       y_axis += 12;
       LCD.drawString(buff_prefix, floor((TFT_W - LCD.textWidth(buff_prefix)) / 2), y_axis);
-      
       free(data);
       client.stop();
     }
+  } else {
+    LCD.setFreeFont(&FreeSans9pt7b);
+    LCD.setTextFont(1);
+    LCD.drawString(F("No Connection"), floor((TFT_W - LCD.textWidth(F("No Connection"))) / 2), 35);
   }
 }
 
