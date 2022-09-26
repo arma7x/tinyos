@@ -12,30 +12,28 @@
 
 static uint8_t menu_cursor = 0;
 
-#define NUM_MENU 6
+#define NUM_MENU 5
 
 static const Menu nav_menu[NUM_MENU] = {
   { epd_bitmap_weather, "Weather" },
   { epd_bitmap_foreign_currency, "Currency" },
   { epd_bitmap_thermometer, "Temperature" },
-  { epd_bitmap_calendar, "Calendar" },
   { epd_bitmap_settings, "Settings" },
   { epd_bitmap_about, "System Info" },
 };
 
-static void drawMenuIcon() {
+static void drawMenu() {
   clearDisplaySafeArea();
-  LCD.setTextFont(2);
-  LCD.setTextColor(TFT_BLACK, TFT_BG);
-  LCD.setFreeFont(&FreeSansBold9pt7b);
   LCD.drawBitmap(55, 11, nav_menu[menu_cursor].icon, 50, 50, TFT_BLACK);
+  LCD.setTextColor(TFT_BLACK, TFT_BG);
+  LCD.setTextFont(1);
+  LCD.setFreeFont(&FreeSansBold9pt7b);
   LCD.drawString(nav_menu[menu_cursor].title, floor((TFT_W - LCD.textWidth(nav_menu[menu_cursor].title)) / 2), 61);
 }
 
 static void _init(int num, ...) {
-  // Serial.println("Menu init %d\n");
   clearDisplaySafeArea();
-  drawMenuIcon();
+  drawMenu();
 }
 
 static void _destroy() {}
@@ -46,8 +44,7 @@ static void onKeyUp() {
    } else {
       menu_cursor--;
    }
-   // Serial.println(nav_menu[menu_cursor].title);
-   drawMenuIcon();
+   drawMenu();
 }
 
 static void onKeyDown( ) {
@@ -55,8 +52,7 @@ static void onKeyDown( ) {
   if (menu_cursor >= NUM_MENU) {
     menu_cursor = 0;
   }
-  // Serial.println(nav_menu[menu_cursor].title);
-  drawMenuIcon();
+  drawMenu();
 }
 
 static void onKeyRight( ) {}
@@ -64,18 +60,25 @@ static void onKeyRight( ) {}
 static void onKeyLeft() {}
 
 static void onKeyMid() {
-  if (menu_cursor == 0) {
-    ModuleSwitcher(GetModuleWeather());
-    GetActiveModule().Init(0);
-  } else if (menu_cursor == 2) {
-    ModuleSwitcher(GetModuleTemperature());
-    GetActiveModule().Init(0);
-  } else if (menu_cursor == 4) {
-    ModuleSwitcher(GetModuleSettings());
-    GetActiveModule().Init(1, 0);
-  } else if (menu_cursor == 5) {
-    ModuleSwitcher(GetModuleSystemInfo());
-    GetActiveModule().Init(0);
+  switch (menu_cursor) {
+    case 0:
+      ModuleSwitcher(GetModuleWeather());
+      GetActiveModule().Init(0);
+      break;
+    case 1:
+      break;
+    case 2:
+      ModuleSwitcher(GetModuleTemperature());
+      GetActiveModule().Init(0);
+      break;
+    case 3:
+      ModuleSwitcher(GetModuleSettings());
+      GetActiveModule().Init(1, 0);
+      break;
+    case 4:
+      break;
+      ModuleSwitcher(GetModuleSystemInfo());
+      GetActiveModule().Init(0);
   }
 }
 
