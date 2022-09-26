@@ -41,7 +41,7 @@ void TaskSyncClock(void *pvParameters) {
     }
     if (WiFi.status() == WL_CONNECTED) {
       struct tm timeinfo;
-      configTime(calcTimezoneOffset(), DAYLIGHT_OFFSET_SEC, NTP_SERVER);
+      configTime(0, DAYLIGHT_OFFSET_SEC, NTP_SERVER);
       if(getLocalTime(&timeinfo)) {
         SyncClockTime = time(NULL) + 2;
         vTaskSuspend(SyncClockPid);
@@ -55,8 +55,8 @@ void TaskUpdateClock(void *pvParameters) {
   for (;;) {
     time_t t = time(NULL);
     struct tm *tm = localtime(&t);
-    // t = t + calcTimezoneOffset();
-    // tm = localtime(&t);
+    t = t + calcTimezoneOffset();
+    tm = localtime(&t);
     drawClockWidget(tm);
     if (GetActiveModule().name == "HOMESCREEN") {
       drawHomescreenWidget(tm);
