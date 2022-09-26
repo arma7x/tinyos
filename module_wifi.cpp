@@ -216,7 +216,7 @@ static void onKeyReset( ) {
   shortcut = 0;
 }
 
-Module wifi = { "WIFI", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
+static Module wifi = { "WIFI", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
 Module GetModuleWiFi() {
   return wifi;

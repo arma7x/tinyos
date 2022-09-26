@@ -220,7 +220,7 @@ static void onKeyReset( ) {
   shortcut = 0;
 }
 
-Module settings = { "SETTINGS", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
+static Module settings = { "SETTINGS", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
 Module GetModuleSettings() {
   return settings;

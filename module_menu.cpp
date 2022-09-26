@@ -91,7 +91,7 @@ static void onKeyReset( ) {
   GetActiveModule().Init(0);
 }
 
-Module menu = { "MENU", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
+static Module menu = { "MENU", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
 Module GetModuleMenu() {
   return menu;

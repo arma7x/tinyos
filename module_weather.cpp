@@ -189,7 +189,7 @@ static void onKeyReset( ) {
   shortcut = 0;
 }
 
-Module weather = { "WEATHER", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
+static Module weather = { "WEATHER", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
 Module GetModuleWeather() {
   return weather;

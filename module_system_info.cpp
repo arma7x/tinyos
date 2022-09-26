@@ -102,7 +102,7 @@ static void onKeyReset( ) {
   GetActiveModule().Init(0);
 }
 
-Module system_info = { "SYSTEM_INFO", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
+static Module system_info = { "SYSTEM_INFO", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };
 
 Module GetModuleSystemInfo() {
   return system_info;
