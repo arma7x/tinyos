@@ -16,6 +16,7 @@
 
 TaskHandle_t TaskScanWifiPid;
 
+static int shortcut = 0;
 bool mounted = 0;
 int networks = 0;
 uint8_t network_cursor = 0;
@@ -129,6 +130,14 @@ static void _init(int num, ...) {
   } else {
     displayNetwork();
   }
+  va_list arguments;
+  va_start(arguments, num);
+  for (uint8_t a=0; a<num;a++) {
+    if (a == 0) {
+      shortcut = va_arg(arguments, int);
+    }
+  }
+  va_end(arguments);
 }
 
 static void _destroy() {
@@ -197,8 +206,14 @@ static void onKeySet() {
 
 static void onKeyReset( ) {
   GetActiveModule().Destroy();
-  ModuleSwitcher(GetModuleSettings());
-  GetActiveModule().Init(0);
+  if (shortcut == 0) {
+    ModuleSwitcher(GetModuleSettings());
+    GetActiveModule().Init(0);
+  } else {
+    ModuleSwitcher(GetModuleHomescreen());
+    GetActiveModule().Init(0);
+  }
+  shortcut = 0;
 }
 
 Module wifi = { "WIFI", _init, _destroy, onKeyUp, onKeyDown,onKeyRight, onKeyLeft, onKeyMid, onKeySet, onKeyReset };

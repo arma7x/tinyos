@@ -1,3 +1,4 @@
+#include <WiFi.h>
 #include <pgmspace.h>
 #include <stdint.h>
 #include "env.h"
@@ -52,7 +53,12 @@ static void onKeyMid() {
   GetActiveModule().Init(0);
 }
 
-static void onKeySet() {}
+static void onKeySet() {
+  if (WiFi.getMode() != WIFI_MODE_NULL) {
+    ModuleSwitcher(GetModuleWiFi());
+    GetActiveModule().Init(1, 1);
+  }
+}
 
 static void onKeyReset( ) {
   ModuleSwitcher(GetModuleSettings());
