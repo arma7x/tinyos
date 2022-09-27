@@ -19,7 +19,7 @@ static int shortcut = 0;
 #define KEYS 19
 #define COLUMNS 5
 
-const char* le_root_ca PROGMEM = \
+static const char* TrustIdX3Root PROGMEM = \
   "-----BEGIN CERTIFICATE-----\n" \
   "MIIDSjCCAjKgAwIBAgIQRK+wgNajJ7qJMDmGLvhAazANBgkqhkiG9w0BAQUFADA/\n" \
   "MSQwIgYDVQQKExtEaWdpdGFsIFNpZ25hdHVyZSBUcnVzdCBDby4xFzAVBgNVBAMT\n" \
@@ -40,7 +40,7 @@ const char* le_root_ca PROGMEM = \
   "JDGFoqgCWjBH4d1QB7wCCZAA62RjYJsWvIjJEubSfZGL+T0yjWW06XyxV3bqxbYo\n" \
   "Ob8VZRzI9neWagqNdwvYkQsEjgfbKbYK7p2CNTUQ\n" \
   "-----END CERTIFICATE-----\n";
-     
+
 const char *weather_keys[] PROGMEM = {"?", "mm", "=", "///", "//", "**", "*/*", "/", ".", "x", "x/", "*", "*/", "m", "o", "/!/", "!/", "*!*", "mmm"};
 
 const char *weather_icons[KEYS][COLUMNS] PROGMEM = {
@@ -93,7 +93,7 @@ static void _init(int num, ...) {
     LCD.setFreeFont(&FreeSans9pt7b);
     LCD.setTextFont(1);
     LCD.drawString(F("Connecting..."), floor((TFT_W - LCD.textWidth(F("Connecting..."))) / 2), 35);
-    client.setCACert(le_root_ca);
+    client.setCACert(TrustIdX3Root);
     if (!client.connect("wttr.in", 443)) {
       LCD.setFreeFont(&FreeSans9pt7b);
       LCD.setTextFont(1);
@@ -115,14 +115,13 @@ static void _init(int num, ...) {
       char *data = (char*) malloc(sizeof(char) * len);
       while (client.available()) {
         char c = client.read();
-        if (c <= 127) { 
+        if (c <= 127) {
           data[len - 1] = c;
           data = (char*) realloc(data, sizeof(char) * ++len);
           // Serial.printf("%d %c %d\n", len - 2, data[len - 2], len - 1);
         }
       }
       data[len - 1] = '\0';
-      // Serial.println(data);
       char buff_location[70];
       char buff_prefix[30];
       // char *data = "Kuala Lumpur, Malaysia|Partly cloudy@m";

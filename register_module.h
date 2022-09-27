@@ -18,6 +18,7 @@ Module GetModuleWiFi();
 Module GetModuleTemperature();
 Module GetModuleWeather();
 Module GetModuleSystemInfo();
+Module GetModuleCurrency();
 
 
 #ifdef __cplusplus

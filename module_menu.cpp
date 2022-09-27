@@ -66,6 +66,8 @@ static void onKeyMid() {
       GetActiveModule().Init(0);
       break;
     case 1:
+      ModuleSwitcher(GetModuleCurrency());
+      GetActiveModule().Init(0);
       break;
     case 2:
       ModuleSwitcher(GetModuleTemperature());
