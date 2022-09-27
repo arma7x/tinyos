@@ -20,6 +20,7 @@ typedef struct currency {
   int idx;
   char *code;
   char *rate;
+  char *date;
 } Currency;
 
 static char from[27];
@@ -94,9 +95,9 @@ static void convert(char *_from, char *_to, char *_amount) {
   clearDisplaySafeArea();
   char url[200];
   if (strcmp(_from, "USD") == 0) {
-    sprintf(url, "GET https://api.exchangerate.host/latest?amount=%s&base=USD&symbols=%s,EUR,JPY,GBP,CHF,CAD,AUD,NZD&format=tsv&places=2 HTTP/1.0", _amount, _to);
+    sprintf(url, "GET https://api.exchangerate.host/latest?amount=%s&base=USD&symbols=%s,EUR,JPY,GBP,CHF,CAD,AUD,NZD&format=tsv&places=3 HTTP/1.0", _amount, _to);
   } else {
-    sprintf(url, "GET https://api.exchangerate.host/latest?amount=%s&base=%s&symbols=%s,USD,EUR,GBP,CHF,CAD,AUD,NZD&format=tsv&places=2 HTTP/1.0", _amount, _from, _to);
+    sprintf(url, "GET https://api.exchangerate.host/latest?amount=%s&base=%s&symbols=%s,USD,EUR,GBP,CHF,CAD,AUD,NZD&format=tsv&places=3 HTTP/1.0", _amount, _from, _to);
   }
 
   WiFiClientSecure client;
@@ -115,8 +116,10 @@ static void convert(char *_from, char *_to, char *_amount) {
     uint8_t tab_number = 0;
     char code[4];
     uint8_t code_index = 0;
-    char rate[10];
+    char rate[11];
     uint8_t rate_index = 0;
+    char date[11];
+    uint8_t date_index = 0;
     clearDisplaySafeArea();
     client.println(url);
     client.println("Host: api.exchangerate.host");
@@ -148,18 +151,27 @@ static void convert(char *_from, char *_to, char *_amount) {
               rate[rate_index++] = c;
             }
           }
+        } else if (tab_number == 3) {
+          if (c == '\n') {
+            date[date_index] = '\0';
+          } else {
+            date[date_index++] = c;
+          }
         }
         if (c == '\t') {
           tab_number++;
         } else if (c == '\n') {
           curencies = (Currency*) realloc(curencies, line_number * sizeof(Currency));
           curencies[line_number - 1].idx = line_number;
-          curencies[line_number - 1].code = (char*)malloc(strlen(code) * sizeof(char*));
+          curencies[line_number - 1].code = (char*) malloc(strlen(code) * sizeof(char*));
           sprintf(curencies[line_number - 1].code, "%s", code);
-          curencies[line_number - 1].rate = (char*)malloc(strlen(rate) * sizeof(char*));
+          curencies[line_number - 1].rate = (char*) malloc(strlen(rate) * sizeof(char*));
           sprintf(curencies[line_number - 1].rate, "%s", rate);
+          curencies[line_number - 1].date = (char*) malloc(strlen(date) * sizeof(char*));
+          sprintf(curencies[line_number - 1].date, "%s", date);
           memset(&code[0], 0, sizeof(code));
           memset(&rate[0], 0, sizeof(rate));
+          memset(&date[0], 0, sizeof(date));
         }
       }
       if (c == '\n') {
@@ -167,6 +179,7 @@ static void convert(char *_from, char *_to, char *_amount) {
         tab_number = 0;
         code_index = 0;
         rate_index = 0;
+        date_index = 0;
       }
     }
     client.stop();
@@ -174,11 +187,13 @@ static void convert(char *_from, char *_to, char *_amount) {
     for (int i=0;i<line_number-1;i++) {
       LCD.setFreeFont(&FreeSans9pt7b);
       LCD.setTextFont(1);
-      LCD.drawString(curencies[i].code, 1, pad_top);
+      LCD.drawString(curencies[i].date, 1, pad_top);
+      LCD.drawString(curencies[i].code, LCD.textWidth(curencies[i].date) + 20, pad_top);
       LCD.drawString(curencies[i].rate, TFT_W - LCD.textWidth(curencies[i].rate) - 1, pad_top);
-      pad_top += 9;
       free(curencies[i].code);
       free(curencies[i].rate);
+      free(curencies[i].date);
+      pad_top += 9;
     }
     free(curencies);
   }
