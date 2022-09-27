@@ -76,8 +76,14 @@ static void setValueCallback(char *text) {
     snprintf(amount, 27, "%s", text);
   } else if (menu_index == 1) {
     snprintf(from, 27, "%s", text);
+    for (uint8_t i=0;i<strlen(from);i++) {
+      from[i] = toupper(*(from + i));
+    }
   } else if (menu_index == 2) {
     snprintf(to, 27, "%s", text);
+    for (uint8_t i=0;i<strlen(to);i++) {
+      to[i] = toupper(*(to + i));
+    }
   }
   GetActiveModule().Destroy();
   ModuleSwitcher(GetModuleCurrency());
@@ -86,12 +92,6 @@ static void setValueCallback(char *text) {
 
 static void convert(char *_from, char *_to, char *_amount) {
   clearDisplaySafeArea();
-  for (uint8_t i=0;i<strlen(_from);i++) {
-    _from[i] = toupper(*(_from + i));
-  }
-  for (uint8_t i=0;i<strlen(_to);i++) {
-    _to[i] = toupper(*(_to + i));
-  }
   char url[200];
   if (strcmp(_from, "USD") == 0) {
     sprintf(url, "GET https://api.exchangerate.host/latest?amount=%s&base=USD&symbols=%s,EUR,JPY,GBP,CHF,CAD,AUD,NZD&format=tsv&places=2 HTTP/1.0", _amount, _to);
