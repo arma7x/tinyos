@@ -16,7 +16,7 @@ static uint8_t menu_cursor = 0;
 
 static const Menu nav_menu[NUM_MENU] = {
   { epd_bitmap_weather, "Weather" },
-  { epd_bitmap_foreign_currency, "Currency" },
+  { epd_bitmap_foreign_currency, "Forex Exchange" },
   { epd_bitmap_thermometer, "Temperature" },
   { epd_bitmap_settings, "Settings" },
   { epd_bitmap_about, "System Info" },
