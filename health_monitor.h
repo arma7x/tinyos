@@ -1,11 +1,11 @@
 #ifndef HEALTH_MONITOR_H
 #define HEALTH_MONITOR_H
 
-#if CONFIG_FREERTOS_UNICORE
-#define ARDUINO_RUNNING_CORE 0
-#else
-#define ARDUINO_RUNNING_CORE 1
-#endif
+// #if CONFIG_FREERTOS_UNICORE
+// #define ARDUINO_RUNNING_CORE 0
+// #else
+// #define ARDUINO_RUNNING_CORE 1
+// #endif
 
 #include "env.h"
 #include <SPI.h>
