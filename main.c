@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "health_monitor.h"
 #include "env.h"
 #include "driver.h"
