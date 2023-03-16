@@ -128,6 +128,14 @@ static void _init(int num, ...) {
       // uint8_t len = strlen(data);
       uint8_t key_idx = 0;
       uint8_t prefix_idx = 0;
+      if (key_idx == 0 && prefix_idx == 0) {
+        LCD.setFreeFont(&FreeSans9pt7b);
+        LCD.setTextFont(1);
+        LCD.drawString(F("Broken API: wttr.in!"), floor((TFT_W - LCD.textWidth(F("Broken API: wttr.in!"))) / 2), 35);
+        free(data);
+        client.stop();
+        return;
+      }
       for (uint8_t j=len-1;j>-1;j--) {
         if (data[j] == '@') {
           key_idx = j+1;
